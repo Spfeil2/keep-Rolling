@@ -86,27 +86,11 @@ map.on("click", (e) => {
 L.control.scale().addTo(map)
 
 
-let currentLocation;
-
-const onLocationFound = (e) => {
-    const radius = e.accuracy / 2;
-    L.marker(e.latlng).addTo(map)
-      .bindPopup("You are within " + radius + " meters from this point").openPopup();
-    L.circle(e.latlng, radius).addTo(map);
-
-    currentLocation = e.latlng
-  }
-  
-  map.on('locationfound', onLocationFound);
-  map.locate({setView: true, watch: true, maxZoom: 8});
-
-
 // submit form
 const form = document.getElementById("drawer__form")
 form.onsubmit = (e) => {    
     e.preventDefault()
 
-    console.log(currentLocation)
 
     // get input values 
     const type = form.deficiency.value;
@@ -125,10 +109,13 @@ form.onsubmit = (e) => {
     console.log(data)
 }
 
-document.getElementById("stop-locate").addEventListener("click", () => {
-    console.log("test")
-    map.stopLocate()
+document.getElementById("geolocation-btn").addEventListener("click", () => {
+    map.flyTo(currentLocation, 12);
 })
 
+const lc = L.control.locate({
+    watch: true,
+    enableHighAccuracy: true
+}).addTo(map);
 
 

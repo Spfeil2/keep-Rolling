@@ -91,7 +91,7 @@ body {
 }
 
 #drawer__title {
-    margin-top: 2em;
+    margin-top: 1.6em;
     font-size: 2.4em;
     color: #0d0d0d;
 }
@@ -121,6 +121,7 @@ body {
     border-radius: 5px;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     margin-bottom: 1.5em;
+    padding: .4em;
 }
 
 .drawer__input--textarea {
@@ -130,6 +131,8 @@ body {
     border-radius: 5px;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     margin-bottom: 1.5em;
+    resize: none;
+    padding: .4em;
 }
 
 #drawer__input--image {

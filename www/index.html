@@ -55,12 +55,14 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
 
-    <title>Cordova Map</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.js"
+        charset="utf-8"></script>
+
+    <title>keep rolling</title>
 </head>
 
 <body>
-
-    <button id="stop-locate">stop locate</button>
 
     <div id="welcome-screen">
 
@@ -161,9 +163,8 @@
                     <input name="datei" type="file" name="image" size="50" accept="text/*" id="drawer__input--image">
 
 
-                    <label class="drawer__label">Please provide a description</label>
-                    <textarea id="text" name="text" name="description" cols="35" rows="8"
-                        class="drawer__input--textarea"></textarea>
+                    <label class="drawer__label">*Please provide a description</label>
+                    <textarea id="text" name="text" name="description" class="drawer__input--textarea"></textarea>
 
                     <input type="submit" value="Submit">
                 </form>
