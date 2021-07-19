@@ -34,6 +34,101 @@ setTimeout(() => {
 }, 4000)
 
 
+const openDrawer = () => {
+    // show drawer content
+    setTimeout(() => {
+        document.getElementById("drawer__content").style.display = "block"
+    }, 300)
+
+    // show drawer
+    document.getElementById("drawer-container").style.width = "100%";
+}
+
+/* Set the width of the drawer to 0 */
+const closeDrawer = () => {
+    // hide drawer content
+    document.getElementById("drawer__content").style.display = "none"
+
+    // hide drawer
+    document.getElementById("drawer-container").style.width = "0";
+}
+
+  
+// map
+const layer1 = L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+  attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
+})
+
+const map = L.map("map", {
+    center: [52.283333, 8.050000],
+    zoom: 12,
+    layers: [layer1]
+})
+
+const onSuccess = function(position) {
+  console.log(position.coords.latitude, position.coords.longitude)
+
+  L.marker([position.coords.latitude,  position.coords.longitude]).addTo(map);
+};
+
+function onError(error) {
+  alert(error.code, error.message);
+}
+
+navigator.geolocation.getCurrentPosition(onSuccess, onError);
+
+
+// onclick events
+map.on("click", (e) => {
+    console.log(e.latlng)
+})
+
+L.control.scale().addTo(map)
+
+
+let currentLocation;
+
+const onLocationFound = (e) => {
+    const radius = e.accuracy / 2;
+    L.marker(e.latlng).addTo(map)
+      .bindPopup("You are within " + radius + " meters from this point").openPopup();
+    L.circle(e.latlng, radius).addTo(map);
+
+    currentLocation = e.latlng
+  }
+  
+  map.on('locationfound', onLocationFound);
+  map.locate({setView: true, watch: true, maxZoom: 8});
+
+
+// submit form
+const form = document.getElementById("drawer__form")
+form.onsubmit = (e) => {    
+    e.preventDefault()
+
+    console.log(currentLocation)
+
+    // get input values 
+    const type = form.deficiency.value;
+    const name = form.name.value;
+    const mail = form.email.value;
+    //const image = form.image.value;
+    const description = document.getElementsByClassName("drawer__input--textarea")[0].value;
+
+    const data = {
+        type,
+        name,
+        mail,
+        description
+    }
+
+    console.log(data)
+}
+
+document.getElementById("stop-locate").addEventListener("click", () => {
+    console.log("test")
+    map.stopLocate()
+})
 
 
 

@@ -60,6 +60,8 @@
 
 <body>
 
+    <button id="stop-locate">stop locate</button>
+
     <div id="welcome-screen">
 
         <svg width="491" height="582" viewBox="0 0 491 582" fill="none" xmlns="http://www.w3.org/2000/svg" id="bicyle"
@@ -113,8 +115,8 @@
         <h1 id="welcome-screen-title">keep rolling</h1>
     </div>
 
-    <div id="mySidenav" class="sidenav">
-        <a class="closebtn" onclick="closeNav()">
+    <div id="drawer-container" class="drawer-container">
+        <a class="closebtn" onclick="closeDrawer()">
             <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000">
                 <path d="M0 0h24v24H0z" fill="none" />
                 <path
@@ -127,30 +129,43 @@
                 <h1 id="drawer__title">Thank your for keeping Osnabrück safe.</h1>
                 <h2 id="drawer__subtitle">Please fill in the details below so that others can see your commit.</h2>
 
-                <label class="drawer__label">What deficiency would you like to report?</label>
-                <div class="drawer__radios">
-                    <input type="radio" id="deficiency_1" name="deficiency" value="deficiency_1" checked>
-                    <label for="deficiency_1">Bike path blocked by rampant vegetation</label>
-
-                    <input type="radio" id="deficiency_2" name="deficiency" value="deficiency_2">
-                    <label for="deficiency_2">Bike path blocked by object</label>
-
-                    <input type="radio" id="deficiency_3" name="deficiency" value="deficiency_3">
-                    <label for="deficiency_3">Damage (e.g. pothole) to bike path</label>
-
-                    <input type="radio" id="deficiency_4" name="deficiency" value="deficiency_4">
-                    <label for="deficiency_4">Bike lane is often parked in this place</label>
-
-                    <input type="radio" id="deficiency_5" name="deficiency" value="deficiency_5">
-                    <label for="deficiency_5">Traffic light switching is unfavorable for cyclists at this point</label>
-                </div>
-
                 <form id="drawer__form">
-                    <label class="drawer__label">Please enter your name</label>
-                    <input type="text" class="drawer__input">
+                    <label class="drawer__label">*What deficiency would you like to report?</label>
+                    <div class="drawer__radios">
+                        <input type="radio" id="deficiency_1" name="deficiency" value="vegetation" checked>
+                        <label for="deficiency_1">Bike path blocked by rampant vegetation</label>
 
-                    <label class="drawer__label">Please enter your e-mail</label>
-                    <input type="text" class="drawer__input">
+                        <input type="radio" id="deficiency_2" name="deficiency" value="object">
+                        <label for="deficiency_2">Bike path blocked by object</label>
+
+                        <input type="radio" id="deficiency_3" name="deficiency" value="damage">
+                        <label for="deficiency_3">Damage (e.g. pothole) to bike path</label>
+
+                        <input type="radio" id="deficiency_4" name="deficiency" value="parking">
+                        <label for="deficiency_4">Bike lane is often parked in this place</label>
+
+                        <input type="radio" id="deficiency_5" name="deficiency" value="traffic_lights">
+                        <label for="deficiency_5">
+                            Traffic light switching is unfavorable for cyclists at this point
+                        </label>
+                    </div>
+
+                    <label class="drawer__label">*Please enter your name</label>
+                    <input type="text" name="name" class="drawer__input">
+
+                    <label class="drawer__label">*Please enter your e-mail</label>
+                    <input type="text" name="email" class="drawer__input">
+
+
+                    <label class="drawer__label">Please provide an image if possible</label>
+                    <input name="datei" type="file" name="image" size="50" accept="text/*" id="drawer__input--image">
+
+
+                    <label class="drawer__label">Please provide a description</label>
+                    <textarea id="text" name="text" name="description" cols="35" rows="8"
+                        class="drawer__input--textarea"></textarea>
+
+                    <input type="submit" value="Submit">
                 </form>
             </div>
         </div>
@@ -160,16 +175,16 @@
 
     <!-- open drawer -->
     <button id="geolocation-btn">
-        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000">
+        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#eff0f3">
             <path d="M0 0h24v24H0z" fill="none" />
             <path
                 d="M20.94 11c-.46-4.17-3.77-7.48-7.94-7.94V1h-2v2.06C6.83 3.52 3.52 6.83 3.06 11H1v2h2.06c.46 4.17 3.77 7.48 7.94 7.94V23h2v-2.06c4.17-.46 7.48-3.77 7.94-7.94H23v-2h-2.06zM12 19c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z" />
         </svg>
     </button>
 
-    <button onclick="openNav()" id="open-drawer-btn">
+    <button onclick="openDrawer()" id="open-drawer-btn">
         <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px" viewBox="0 0 24 24"
-            width="24px" fill="#000000">
+            width="24px" fill="#eff0f3">
             <g>
                 <rect fill="none" height="24" width="24" />
             </g>
@@ -184,7 +199,6 @@
 
     <div id="map"></div>
 
-    <script src="./js/map.js"></script>
     <script src="cordova.js"></script>
     <script src="js/index.js"></script>
 </body>
