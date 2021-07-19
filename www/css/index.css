@@ -250,6 +250,26 @@ body {
     bottom: 25%;
 }
 
+.leaflet-bar-part-single {
+    position: absolute !important;
+    top: 10px !important;
+    left: 10px !important;
+    background-color: #ff8e3c  !important;
+}
+
+.leaflet-control-locate  {
+    position: absolute !important;
+    bottom: 7.5em !important;
+    right: 1.5em !important;
+
+    border: none !important;
+    border-radius: 50% !important;
+    width: 50px !important; 
+    height: 50px !important;
+    background-color: #ff8e3c !important;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px !important;
+}
+
 
 @keyframes moveBike {
     from {

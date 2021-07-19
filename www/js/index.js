@@ -65,19 +65,6 @@ const map = L.map("map", {
     layers: [layer1]
 })
 
-const onSuccess = function(position) {
-  console.log(position.coords.latitude, position.coords.longitude)
-
-  L.marker([position.coords.latitude,  position.coords.longitude]).addTo(map);
-};
-
-function onError(error) {
-  alert(error.code, error.message);
-}
-
-navigator.geolocation.getCurrentPosition(onSuccess, onError);
-
-
 // onclick events
 map.on("click", (e) => {
     console.log(e.latlng)
@@ -109,13 +96,10 @@ form.onsubmit = (e) => {
     console.log(data)
 }
 
-document.getElementById("geolocation-btn").addEventListener("click", () => {
-    map.flyTo(currentLocation, 12);
-})
-
 const lc = L.control.locate({
     watch: true,
-    enableHighAccuracy: true
+    enableHighAccuracy: true,
+    position: "bottomright"
 }).addTo(map);
 
 
