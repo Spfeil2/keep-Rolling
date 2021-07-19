@@ -99,7 +99,7 @@ form.onsubmit = (e) => {
 const lc = L.control.locate({
     watch: true,
     enableHighAccuracy: true,
-    position: "bottomright"
+    position: "bottomright",
 }).addTo(map);
 
 

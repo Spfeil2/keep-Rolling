@@ -250,6 +250,31 @@ body {
     bottom: 25%;
 }
 
+.leaflet-control-zoom {
+    border: none !important;
+}
+
+.leaflet-control-locate.active.following a{
+    color: white !important;
+}
+
+.leaflet-control-locate.active a {
+    color: rgb(206, 206, 206) !important;
+}
+
+.leaflet-control-locate a {
+    color: rgb(206, 206, 206) !important;
+}
+
+
+
+.leaflet-control-zoom-in, .leaflet-control-zoom-out {
+    background-color: #ff8e3c !important;
+    color: white !important;
+    margin-bottom: .2em !important;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px !important;
+}
+
 .leaflet-bar-part-single {
     position: absolute !important;
     top: 10px !important;
@@ -261,7 +286,6 @@ body {
     position: absolute !important;
     bottom: 7.5em !important;
     right: 1.5em !important;
-
     border: none !important;
     border-radius: 50% !important;
     width: 50px !important; 
@@ -270,6 +294,9 @@ body {
     box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px !important;
 }
 
+.leaflet-map-pane svg circle {
+    fill: #ff8e3c !important;
+}
 
 @keyframes moveBike {
     from {
