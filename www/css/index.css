@@ -165,7 +165,7 @@ h1 {
 }
 
 #bicyle {
-    animation: moveBike 2s linear;
+    animation: moveBike 3s linear;
     width: 50%;
     height: auto;
     transform: translateX(50%);
@@ -184,7 +184,7 @@ h1 {
 }
 
 .bicycle-wheel {
-    animation: rotation 2s linear;
+    animation: rotation 3s linear;
     transform-box: fill-box;
     transform-origin: center;
 }

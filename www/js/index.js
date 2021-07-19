@@ -31,7 +31,7 @@ function onDeviceReady() {
 
 setTimeout(() => {
     document.getElementById("welcome-screen").style.display = "none"
-}, 5000)
+}, 4000)
 
 
 
