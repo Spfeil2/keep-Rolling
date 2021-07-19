@@ -31,7 +31,6 @@ body {
     padding:0px;
     /* Padding to avoid the "unsafe" areas behind notches in the screen */
     padding: env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px) env(safe-area-inset-bottom, 0px) env(safe-area-inset-left, 0px);
-    text-transform:uppercase;
     width:100%;
 }
 
@@ -46,32 +45,6 @@ body {
     }
 }
 
-h1 {
-    font-size:24px;
-    font-weight:normal;
-    margin:0px;
-    overflow:visible;
-    padding:0px;
-    text-align:center;
-}
-
-.event {
-    border-radius:4px;
-    color:#FFFFFF;
-    font-size:12px;
-    margin:0px 30px;
-    padding:2px 0px;
-}
-
-.event.listening {
-    background-color:#333333;
-    display:block;
-}
-
-.event.received {
-    background-color:#4B946A;
-    display:none;
-}
 
 #map {
     height: 100vh;
@@ -94,7 +67,7 @@ h1 {
 
 /* The side navigation menu */
 .sidenav {
-    height: 100vh; /* 100% Full-height */
+    height: 100%; /* 100% Full-height */
     width: 0; /* 0 width - change this with JavaScript */
     position: fixed; /* Stay in place */
     z-index: 5000; /* Stay on top */
@@ -102,15 +75,90 @@ h1 {
     left: 0;
     background-color: white; /* Black*/
     overflow-x: hidden; /* Disable horizontal scroll */
-    padding-top: 60px; /* Place content 60px from the top */
     transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
 }
 
+#drawer {
+    margin: 0;
+    background-color: #eff0f3;
+    height: 100%;
+}
+
+#drawer__content {
+    padding: 2em;
+    background-color: #eff0f3;
+}
+
+#drawer__title {
+    margin-top: 2em;
+    font-size: 2.4em;
+    color: #0d0d0d;
+}
+
+#drawer__subtitle {
+    font-size: 1.2em;
+    color: #949494;
+    margin-bottom: 2.5em;
+}
+
+#drawer__form {
+    margin-top: 3em;
+}
+
+.drawer__label {
+    display: block;
+    font-size: 1.1em;
+    font-weight: 600;
+    margin-bottom: .8em;
+    color: #2a2a2a;
+}
+
+.drawer__input {
+    width: 100%;
+    height: 40px;
+    border: 1px solid #eff0f3;
+    border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    margin-bottom: 1.5em;
+}
+
+.drawer__btns {
+    display: block;
+    width: 100%;
+    height: 40px;
+    margin-bottom: .4em;
+    border-radius: 4px;
+    border: 1px solid #9c9c9c;
+    background-color: #ff8906; 
+}
+  
+.drawer__radios input[type="radio"] {
+    opacity: 0;
+    position: fixed;
+    width: 0;
+}
+  
+.drawer__radios label {
+    display: block;
+    background-color: #ff8e3c;
+    padding: 14px 20px;
+    font-size: 16px;
+    margin-bottom: .2em;
+    border: 1px solid #eff0f3;
+    border-radius: 5px;
+}
+
+.drawer__radios input[type="radio"]:checked + label {
+    background-color: #d9376e;
+    border: 1px solid #d9376e;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+  
 
 /* Position and style the close button (top right corner) */
 .closebtn {
     position: absolute;
-    top: 0;
+    top: 0px;
     right: 25px;
     font-size: 36px;
     margin-left: 50px;
@@ -138,7 +186,7 @@ h1 {
     height: 50px;
     z-index: 500;
     position: absolute;
-    bottom: 8em;
+    bottom: 7.5em;
     right: 2em;
     background-color: white;
     box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
@@ -162,6 +210,7 @@ h1 {
     color: white;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     background-color: #f25f4c;
+    text-align: center;
 }
 
 #bicyle {

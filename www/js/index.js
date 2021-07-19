@@ -28,10 +28,11 @@ function onDeviceReady() {
     document.getElementById('deviceready').classList.add('ready');
 }
 
-
+// stop showing welcome screen after 4 seconds
 setTimeout(() => {
     document.getElementById("welcome-screen").style.display = "none"
 }, 4000)
+
 
 
 

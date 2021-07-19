@@ -119,7 +119,42 @@
                 <path d="M0 0h24v24H0z" fill="none" />
                 <path
                     d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
-            </svg></a>
+            </svg>
+        </a>
+
+        <div id="drawer">
+            <div id="drawer__content">
+                <h1 id="drawer__title">Thank your for keeping Osnabrück safe.</h1>
+                <h2 id="drawer__subtitle">Please fill in the details below so that others can see your commit.</h2>
+
+                <label class="drawer__label">What deficiency would you like to report?</label>
+                <div class="drawer__radios">
+                    <input type="radio" id="deficiency_1" name="deficiency" value="deficiency_1" checked>
+                    <label for="deficiency_1">Bike path blocked by rampant vegetation</label>
+
+                    <input type="radio" id="deficiency_2" name="deficiency" value="deficiency_2">
+                    <label for="deficiency_2">Bike path blocked by object</label>
+
+                    <input type="radio" id="deficiency_3" name="deficiency" value="deficiency_3">
+                    <label for="deficiency_3">Damage (e.g. pothole) to bike path</label>
+
+                    <input type="radio" id="deficiency_4" name="deficiency" value="deficiency_4">
+                    <label for="deficiency_4">Bike lane is often parked in this place</label>
+
+                    <input type="radio" id="deficiency_5" name="deficiency" value="deficiency_5">
+                    <label for="deficiency_5">Traffic light switching is unfavorable for cyclists at this point</label>
+                </div>
+
+                <form id="drawer__form">
+                    <label class="drawer__label">Please enter your name</label>
+                    <input type="text" class="drawer__input">
+
+                    <label class="drawer__label">Please enter your e-mail</label>
+                    <input type="text" class="drawer__input">
+                </form>
+            </div>
+        </div>
+
     </div>
 
 
