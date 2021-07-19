@@ -28,9 +28,11 @@ function onDeviceReady() {
     document.getElementById('deviceready').classList.add('ready');
 }
 
-/*
+
 setTimeout(() => {
     document.getElementById("welcome-screen").style.display = "none"
-}, 20000)
-*/
+}, 5000)
+
+
+
 
