@@ -193,6 +193,31 @@ body {
     color: black;
 }
 
+#burger-menu {
+    position: absolute;
+    top: 6px;
+    right: 1em;
+    z-index: 5000;
+    fill: white;
+    width: 30px;
+    height: 30px;
+}
+
+#burger-menu:hover {
+    cursor: pointer;
+}
+
+#keep-rolling-title {
+    font-size: 2em;
+    padding: .2em;
+    padding-left: .5em;
+    margin-left: 1em;
+    margin: 0;
+    color: white;
+    box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+    background-color: #f25f4c;
+}
+
 #open-drawer-btn {
     border: none;
     border-radius: 50%;
@@ -200,7 +225,7 @@ body {
     height: 60px;
     z-index: 500;
     position: absolute;
-    bottom: 3em;
+    bottom: 2em;
     right: 2em;
     background-color: #ff8e3c;
     box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
@@ -267,7 +292,7 @@ body {
 
 .leaflet-control-locate  {
     position: absolute !important;
-    bottom: 8.5em !important;
+    bottom: 10.5em !important;
     right: 1.5em !important;
     border: none !important;
     border-radius: 50% !important;

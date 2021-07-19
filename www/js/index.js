@@ -73,6 +73,7 @@ map.on("click", (e) => {
 L.control.scale().addTo(map)
 
 
+
 // zoom to current location on initial page load
 navigator.geolocation.getCurrentPosition(function(location) {
     const latlng = new L.LatLng(location.coords.latitude, location.coords.longitude);
@@ -112,3 +113,6 @@ const lc = L.control.locate({
 // show marker and zoom to current location on load
 lc.start();
 
+document.getElementById("burger-menu").addEventListener("click", () => {
+    console.log("test")
+})
