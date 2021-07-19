@@ -72,12 +72,18 @@ map.on("click", (e) => {
 
 L.control.scale().addTo(map)
 
+// zoom to current location on initial page load
+navigator.geolocation.getCurrentPosition(function(location) {
+    const latlng = new L.LatLng(location.coords.latitude, location.coords.longitude);
+
+    map.flyTo(latlng)
+});
+
 
 // submit form
 const form = document.getElementById("drawer__form")
 form.onsubmit = (e) => {    
     e.preventDefault()
-
 
     // get input values 
     const type = form.deficiency.value;
@@ -100,6 +106,8 @@ const lc = L.control.locate({
     watch: true,
     enableHighAccuracy: true,
     position: "bottomright",
+    setView: true
 }).addTo(map);
 
+console.log(lc)
 

@@ -254,19 +254,17 @@ body {
     border: none !important;
 }
 
-.leaflet-control-locate.active.following a{
-    color: white !important;
+.leaflet-control-locate.active.following a {
+    color: #d9376e !important;
 }
 
 .leaflet-control-locate.active a {
-    color: rgb(206, 206, 206) !important;
+    color: white!important;
 }
 
 .leaflet-control-locate a {
-    color: rgb(206, 206, 206) !important;
+    color: white!important;
 }
-
-
 
 .leaflet-control-zoom-in, .leaflet-control-zoom-out {
     background-color: #ff8e3c !important;
