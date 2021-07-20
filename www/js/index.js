@@ -123,15 +123,6 @@ const geolocate = () => {
 
 geolocate()
 
-// delete entries
-document.getElementById("delete").addEventListener("onclick", async () => {
-    try {
-        const res = await axios.delete("http://igf-srv-lehre.igf.uni-osnabrueck.de:41783/meldungen")
-        console.log(res)
-    } catch (error) {
-        console.log(error);
-    } 
-})
 
 // submit form
 const form = document.getElementById("drawer__form")
@@ -401,3 +392,128 @@ document.getElementById("drawer__take-photo").addEventListener("click", () => {
         alert('Failed because: ' + message);
     }
 })
+
+
+
+// get all items
+async function makeGetRequest(){
+    try{
+      const res = await axios.get('http://igf-srv-lehre.igf.uni-osnabrueck.de:41781/getAll');
+      return res.data
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+
+
+// icons for type
+  const greenIcon = new L.Icon({
+    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41]
+  });
+
+  const redIcon = new L.Icon({
+    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41]
+  });
+
+  const greyIcon = new L.Icon({
+    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-grey.png',
+    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41]
+  });
+
+  const yellowIcon = new L.Icon({
+    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-yellow.png',
+    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41]
+  });
+
+  const violetIcon = new L.Icon({
+    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-violet.png',
+    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41]
+  });
+
+  
+  const fetchMarker = async ()  => {
+    const data = await makeGetRequest()
+    const marker = data.results
+
+     //Loop through the markers array
+     for (let i=0; i<marker.length; i++) {
+        let lon = marker[i].longitude;
+        let lat = marker[i].latitude;
+        
+        //type specific icons
+        let marker_new
+        if (marker[i].type == 'vegetation'){
+            marker_new = new L.Marker([lat, lon], {icon: greenIcon}).addTo(map).on("click", test_click);
+        } else if (marker[i].type == 'damage'){
+            marker_new = new L.Marker([lat, lon], {icon: redIcon}).addTo(map).on("click", test_click);
+        } else if (marker[i].type == 'object'){
+            marker_new = new L.Marker([lat, lon], {icon: violetIcon}).addTo(map).on("click", test_click);
+        } else if (marker[i].type == 'parking'){
+            marker_new = new L.Marker([lat, lon], {icon: greyIcon}).addTo(map).on("click", test_click);
+        } else if (marker[i].type == 'traffic_lights'){
+            marker_new = new L.Marker([lat, lon], {icon: yellowIcon}).addTo(map).on("click", test_click);
+        }
+     }
+  };
+
+  document.addEventListener("DOMContentLoaded", function(event) {
+
+    fetchMarker()
+    console.log("DOM fully loaded and parsed");
+  });
+
+
+
+
+
+  
+/*Buggy marker.. click klappt nicht immer gefühlt ist nur ein kleiner bereich der icons clickbar */
+const test_click = (e) =>{
+    const container = document.getElementById("marker-container")
+        container.style.height = "160px" 
+}
+
+  
+
+
+let markerSwitch = true;
+document.addEventListener("click", (e) => {
+    const container = document.getElementById("marker-container")
+    // detect click outside basemap container to close it
+    // check if anything without the class name "marker" got clicked
+    console.log(e.target)
+    if (!e.target.classList.contains("marker") && container.style.height === "160px" && markerSwitch != false) {
+        container.style.height = "160px"
+        markerSwitch = false
+    } else if (!e.target.classList.contains("marker") && container.style.height === "160px" && markerSwitch === false) {
+        container.style.height = "0px"
+        markerSwitch = true
+    } else if (e.target.classList.contains("marker")) {
+        container.style.height = "160px"
+        markerSwitch = true
+    }
+})
+

@@ -609,3 +609,21 @@ body {
 }
 
 
+#marker-container {
+    height: 0px; 
+    width: 100%; 
+    position: fixed; /* Stay in place */
+    z-index: 5000; 
+    bottom: 0; 
+    left: 0;
+    background-color: var(--bg-color-basemap); 
+    overflow-x: hidden; 
+    transition: 0.5s; 
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    justify-items: center;
+    align-items: center;
+}
