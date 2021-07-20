@@ -148,6 +148,7 @@ const lc = L.control.locate({
     watch: true,
     enableHighAccuracy: true,
     position: "bottomright",
+    setView: true,
 }).addTo(map);
 
 // show marker and zoom to current location on load
