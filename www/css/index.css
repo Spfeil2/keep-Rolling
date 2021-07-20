@@ -465,13 +465,13 @@ body {
     overflow: hidden;
 }
 
-#welcome-screen-title {
-    padding: 1em;
-    margin-top: 30%;
-    color: white;
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-    background-color: #f25f4c;
-    text-align: center;
+
+#main_logo {
+    height: auto;
+    width: 50%;
+    display:block;
+    margin:auto;
+    margin-top: 15%;
 }
 
 #bicyle {
@@ -480,7 +480,7 @@ body {
     height: auto;
     transform: translateX(50%);
     position: absolute;
-    bottom: 25%;
+    bottom: 20%;
 }
 
 #stop-locate {
@@ -570,8 +570,3 @@ body {
 }
 
 
-@media (max-width: 320px) {
-    #welcome-screen-title {
-        padding: 0;
-    }
-}
