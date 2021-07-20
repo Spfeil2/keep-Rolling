@@ -118,7 +118,6 @@ L.control.scale().addTo(map)
 const geolocate = () => {
     navigator.geolocation.getCurrentPosition(function(location) {
         const latlng = new L.LatLng(location.coords.latitude, location.coords.longitude);
-    
         map.flyTo(latlng)
     });
 }
@@ -313,8 +312,10 @@ const filterTypes = (event) => {
 // toggle geolocation
 // follow is enabled per default
 let isGeolocationActive = true;
+
 const toggleGelocation = () =>{
     if (isGeolocationActive) {
+
         // change svg
         document.getElementById("gps-fixed").style.display = "none"
         document.getElementById("gps-not-fixed").style.display = "inline"
@@ -327,18 +328,20 @@ const toggleGelocation = () =>{
         document.getElementById("gps-fixed").style.display = "inline"
         document.getElementById("gps-not-fixed").style.display = "none"
 
-        map.locate()
+        map.locate({
+            watch: true,
+            enableHighAccuracy: true,
+            position: "bottomright",
+            setView: true,
+            follow: true
+        })
+
         lc.start()
         isGeolocationActive = true;
     }
 }
 
-// call geolocate every 3 seconds
-if (isGeolocationActive) {
-    setInterval(function() {
-        geolocate()
-    }, 3000);
-}
+
 
 // stop following on dragend
 map.on('dragend',function(e){
