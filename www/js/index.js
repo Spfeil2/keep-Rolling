@@ -232,7 +232,6 @@ const switchMode = () => {
         // show light mode icon
         document.getElementById("light-icon").style.display = "block"
 
-
         // change border radius of input fields
         for (let input of drawerInputs) {
             input.style.borderRadius = "5px"
@@ -240,7 +239,6 @@ const switchMode = () => {
 
         // change border radius of textarea
         textArea.style.borderRadius = "5px"
-
     } else {
         // change mode
         document.documentElement.setAttribute('data-theme', 'light');
@@ -286,8 +284,13 @@ const filterTypes = (event) => {
     const e = event.target
 
     if (e.classList.value == "filter__options") {
-
         if (e.style.backgroundColor === "rgb(255, 137, 6)") {
+
+            console.log(document.getElementById("filter-container").style.backgroundColor)
+            if (document.getElementById("filter-container").style.backgroundColor === "#fff") {
+                console.log("hi")
+            }
+
             e.style.backgroundColor = "white"
             e.style.boxShadow = "none"
             e.style.border = "1px solid #dee0e4"
