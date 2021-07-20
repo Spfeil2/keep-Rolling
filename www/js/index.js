@@ -115,12 +115,15 @@ L.control.scale().addTo(map)
 
 
 // zoom to current location on initial page load
-navigator.geolocation.getCurrentPosition(function(location) {
-    const latlng = new L.LatLng(location.coords.latitude, location.coords.longitude);
+const geolocate = () => {
+    navigator.geolocation.getCurrentPosition(function(location) {
+        const latlng = new L.LatLng(location.coords.latitude, location.coords.longitude);
+    
+        map.flyTo(latlng)
+    });
+}
 
-    map.flyTo(latlng)
-});
-
+geolocate()
 
 // submit form
 const form = document.getElementById("drawer__form")
@@ -328,6 +331,13 @@ const toggleGelocation = () =>{
         lc.start()
         isGeolocationActive = true;
     }
+}
+
+// call geolocate every 3 seconds
+if (isGeolocationActive) {
+    setInterval(function() {
+        geolocate()
+    }, 3000);
 }
 
 // stop following on dragend
