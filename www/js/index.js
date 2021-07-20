@@ -320,6 +320,14 @@ const toggleGelocation = () =>{
         document.getElementById("gps-fixed").style.display = "none"
         document.getElementById("gps-not-fixed").style.display = "inline"
 
+        map.locate({
+            watch: true,
+            enableHighAccuracy: true,
+            position: "bottomright",
+            setView: false,
+            follow: false
+        })
+
         // stop following
         lc.stopFollowing()
         isGeolocationActive = false;
