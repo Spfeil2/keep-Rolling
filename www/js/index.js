@@ -217,6 +217,10 @@ let currentMode = "light"
 const switchMode = () => {
 
     let currentModeElement = document.getElementsByClassName("settings__content-inner-title")[0]
+    const textArea = document.getElementsByClassName("drawer__input--textarea")[0]
+    const drawerInputs = document.getElementsByClassName("drawer__input")
+
+    console.log(textArea)
 
     if (currentMode === "light") {
         // change mode
@@ -227,6 +231,16 @@ const switchMode = () => {
         document.getElementById("dark-icon").style.display = "none"
         // show light mode icon
         document.getElementById("light-icon").style.display = "block"
+
+
+        // change border radius of input fields
+        for (let input of drawerInputs) {
+            input.style.borderRadius = "5px"
+        }
+
+        // change border radius of textarea
+        textArea.style.borderRadius = "5px"
+
     } else {
         // change mode
         document.documentElement.setAttribute('data-theme', 'light');
@@ -236,6 +250,14 @@ const switchMode = () => {
         document.getElementById("dark-icon").style.display = "block"
         // hide light mode icon
         document.getElementById("light-icon").style.display = "none"
+
+        // change border radius of input fields
+        for (let input of drawerInputs) {
+            input.style.borderRadius = "0px"
+        }
+
+        // change border radius of textarea
+        textArea.style.borderRadius = "0px"
     }  
 
     // toggle mode
