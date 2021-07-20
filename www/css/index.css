@@ -136,7 +136,7 @@ body {
 }
 
 #drawer__input--image {
-    width: 96%;
+    width: 100%;
     padding: 10px;
     border: 1px dashed #BBB;
     border-radius: 5px;
@@ -195,7 +195,7 @@ body {
 
 #burger-menu {
     position: absolute;
-    top: 6px;
+    top: 16px;
     right: 1em;
     z-index: 5000;
     fill: white;
@@ -207,15 +207,50 @@ body {
     cursor: pointer;
 }
 
+#keep-rolling {
+    background-color: #ff8e3c;
+    width: 100%;
+    height: 50px;
+    box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+}
+
 #keep-rolling-title {
     font-size: 2em;
-    padding: .2em;
-    padding-left: .5em;
-    margin-left: 1em;
+    display: inline;
+    position: absolute;
+    left: 1em;
+    top: 8px;
     margin: 0;
     color: white;
-    box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
-    background-color: #f25f4c;
+}
+
+#keep-rolling-new-deficiency {
+    display: inline-block;
+    width: 140px;
+    height: 30px;
+    border-radius: 5px;
+    border: 1px solid #962349;
+    background-color: #d9376e;
+    position: absolute;
+    right: 2em;
+    top: 10px;
+}
+
+#keep-rolling-new-deficiency-icon {
+    position: absolute;
+    left: 5px;
+    top: 4px;
+    fill: #eff0f3;
+    width: 1.8em;
+    height: auto;
+}
+
+#keep-rolling-new-deficiency-title {
+    position: absolute;
+    left: 32px;
+    top: 4px;
+    font-size: 1.2em;
+    color: #eff0f3;
 }
 
 #open-drawer-btn {
@@ -245,7 +280,6 @@ body {
 #welcome-screen-title {
     padding: 1em;
     margin-top: 30%;
-    font-family: 'Fredoka One', cursive;
     color: white;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     background-color: #f25f4c;
@@ -292,7 +326,7 @@ body {
 
 .leaflet-control-locate  {
     position: absolute !important;
-    bottom: 10.5em !important;
+    bottom: 11.8em !important;
     right: 1.5em !important;
     border: none !important;
     border-radius: 50% !important;
