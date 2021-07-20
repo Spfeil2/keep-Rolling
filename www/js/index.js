@@ -351,8 +351,8 @@ map.on('dragend',function(e){
         document.getElementById("gps-not-fixed").style.display = "inline"
 
         map.locate({
-            watch: false,
-            enableHighAccuracy: false,
+            watch: true,
+            enableHighAccuracy: true,
             position: "bottomright",
             setView: false,
             follow: false
