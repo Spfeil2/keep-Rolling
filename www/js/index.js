@@ -1,15 +1,20 @@
 // event listener on document
+// bool for basemap control
+let basemapSwitch = true;
+
 document.addEventListener("click", (e) => {
     const container = document.getElementById("basemap-container")
-
     // detect click outside basemap container to close it
     // check if anything without the class name "basemap" got clicked
-    if (!e.target.classList.contains("basemap") && container.style.height === "160px") {
-        console.log(160)
+    if (!e.target.classList.contains("basemap") && container.style.height === "160px" && basemapSwitch != false) {
         container.style.height = "160px"
-    } else {
-        console.log(0)
+        basemapSwitch = false
+    } else if (!e.target.classList.contains("basemap") && container.style.height === "160px" && basemapSwitch === false) {
         container.style.height = "0px"
+        basemapSwitch = true
+    } else if (e.target.classList.contains("basemap")) {
+        container.style.height = "160px"
+        basemapSwitch = true
     }
 })
 
@@ -167,6 +172,7 @@ const toggleBasemaps = () => {
 
     if (container.style.height === "160px") {
         container.style.height = "0px";
+        basemapSwitch = true
     } else {
         container.style.height = "160px";
     }
@@ -175,17 +181,68 @@ const toggleBasemaps = () => {
 let currentMode = "light"
 // dark/light mode
 const switchMode = () => {
+
+    let currentModeElement = document.getElementsByClassName("settings__content-inner-title")[0]
+
     if (currentMode === "light") {
+        // change mode
         document.documentElement.setAttribute('data-theme', 'dark');
-    }
-    else {
+        // change text
+        currentModeElement.innerHTML = "Light mode"
+        // hide dark mode icon
+        document.getElementById("dark-icon").style.display = "none"
+        // show light mode icon
+        document.getElementById("light-icon").style.display = "block"
+    } else {
+        // change mode
         document.documentElement.setAttribute('data-theme', 'light');
+        // change text
+        currentModeElement.innerHTML = "Dark mode"
+        // show dark mode icon
+        document.getElementById("dark-icon").style.display = "block"
+        // hide light mode icon
+        document.getElementById("light-icon").style.display = "none"
     }  
 
     // toggle mode
     currentMode === "light" ? currentMode = "dark" : currentMode = "light"
+}
 
-    console.log(currentMode)
+let selectedTypes = []
+const submitSearch = (event) => {
+    event.preventDefault()
 
+    const days = event.target.days.value;
+    const dateStart = event.target.start.value;
+    const dateEnd = event.target.end.value;
 
+    const searchData = {
+        days,
+        selectedTypes,
+        date: [dateStart, dateEnd]
+    }
+
+    console.log(searchData)
+}
+
+// change color and check selected types
+const filterTypes = (event) => {
+    const e = event.target
+
+    if (e.classList.value == "filter__options") {
+
+        if (e.style.backgroundColor === "rgb(255, 137, 6)") {
+            e.style.backgroundColor = "white"
+
+            // filter selectedTypes and delete item
+            selectedTypes = selectedTypes.filter(type => type !== e.getAttribute("value"))
+        } else {
+            e.style.backgroundColor = "#ff8906"
+            e.style.boxShadow = "rgb(0 0 0 / 35%) 0px 5px 15px"
+            e.style.border = "none"
+
+            // add type to selectedTypes
+            selectedTypes.push(e.getAttribute("value"))
+        }
+    }
 }
