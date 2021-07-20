@@ -4,6 +4,8 @@
     --border: #bdbec2;
     --bg-filter-btn: #ff8906;
     --bg-filter-fill: #fff;
+    --btn-border: none;
+    --bg-color-basemap: #fff;
 }
 
 [data-theme="dark"] {
@@ -12,6 +14,8 @@
     --border: #ff8906;
     --bg-filter-btn: #0f0e17;
     --bg-filter-fill: #ff8906;
+    --btn-border: #ff8906;
+    --bg-color-basemap: #ff8906;
 }
 
 [data-theme="light"] {
@@ -20,6 +24,7 @@
     --border: #bdbec2;
     --bg-filter-btn: #ff8906;
     --bg-filter-fill: #fff;
+    --btn-border: none;
 }
 
 input:focus {
@@ -94,12 +99,21 @@ body {
     z-index: 5000; 
     bottom: 0; 
     left: 0;
-    background-color: white; 
+    background-color: var(--bg-color-basemap); 
     overflow-x: hidden; 
     transition: 0.5s; 
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
     box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+}
+
+.basemap__btns {
+    object-fit: cover;
+    max-height: 100%;
+    width: 100%;
+    border-radius: 10px;
 }
 
 /* filter */ 
@@ -127,6 +141,7 @@ body {
     background-color: var(--bg-filter-btn);
     box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
     fill: var(--bg-filter-fill);
+    border: 1px solid var(--btn-border);
 }
 
 #filter__content {
@@ -351,6 +366,16 @@ body {
     box-shadow: rgb(0 0 0 / 35%) 0px 5px 15px;
     border: 1px solid #ca7132;
 }
+
+#filter__submit-btn {
+    width: 100%;
+    height: 40px;
+    border-radius: 5px;
+    background-color: #ff8e3c;
+    box-shadow: rgb(0 0 0 / 35%) 0px 5px 15px;
+    border: 1px solid #ca7132;
+    margin-top: 2em;
+}
   
 
 /* Position and style the close button (top right corner) */
@@ -370,6 +395,7 @@ body {
     position: absolute;
     z-index: 5000;
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    border-bottom: 1px solid var(--btn-border);
 }
 
 #keep-rolling-title {
@@ -473,12 +499,12 @@ body {
     position: absolute !important;
     bottom: 7em !important;
     right: 1.5em !important;
-    border: none !important;
     border-radius: 50% !important;
     width: 60px !important; 
     height: 60px !important;
     background-color: var(--bg-color) !important;
     box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px !important;
+    border: 1px solid var(--btn-border) !important;
 }
 
 .leaflet-bar-part-single {
@@ -497,13 +523,9 @@ body {
     z-index: 4999;
     right: 2em;
     top: 10em;
-    border: none;
+    border: 1px solid var(--btn-border);
     box-shadow: rgb(0 0 0 / 16%) 0px 3px 6px, rgb(0 0 0 / 23%) 0px 3px 6px;
     background-color: var(--bg-color);
-}
-
-#basemap-content {
-    padding: 1em;
 }
 
 #open-settings {

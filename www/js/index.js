@@ -95,14 +95,14 @@ const closeSettings = () => {
 
 
 // map
-const layer1 = L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+let baseLayer = L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {
   attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
 })
 
 const map = L.map("map", {
     center: [52.283333, 8.050000],
     zoom: 12,
-    layers: [layer1]
+    layers: [baseLayer]
 })
 
 // onclick events
@@ -167,6 +167,7 @@ document.getElementById("keep-rolling-title").addEventListener("click", () => {
     }, 4000)
 })
 
+// toggle basemap container
 const toggleBasemaps = () => {
     const container = document.getElementById("basemap-container")
 
@@ -177,6 +178,39 @@ const toggleBasemaps = () => {
         container.style.height = "160px";
     }
 }
+
+// switch current basemap
+const switchBasemap = (event) => {
+    const element = event.target.id
+
+    const osmDe = L.tileLayer('https://{s}.tile.openstreetmap.de/tiles/osmde/{z}/{x}/{y}.png', {
+	    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    });
+
+    const esri_WorldImagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+	    attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+    });
+
+    const cartoDB_DarkMatter = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+        subdomains: 'abcd',
+    });
+    
+    if (element === 'standard-map') {
+        map.removeLayer(baseLayer)
+        map.addLayer(osmDe)
+        baseLayer = osmDe
+    } else if (element === 'sat-map') {
+        map.removeLayer(baseLayer)
+        map.addLayer(esri_WorldImagery)
+        baseLayer = esri_WorldImagery
+    } else if (element == 'dark-map') {
+        map.removeLayer(baseLayer)
+        map.addLayer(cartoDB_DarkMatter)
+        baseLayer = cartoDB_DarkMatter
+    }
+}
+
 
 let currentMode = "light"
 // dark/light mode
@@ -233,6 +267,8 @@ const filterTypes = (event) => {
 
         if (e.style.backgroundColor === "rgb(255, 137, 6)") {
             e.style.backgroundColor = "white"
+            e.style.boxShadow = "none"
+            e.style.border = "1px solid #dee0e4"
 
             // filter selectedTypes and delete item
             selectedTypes = selectedTypes.filter(type => type !== e.getAttribute("value"))

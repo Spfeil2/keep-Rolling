@@ -184,8 +184,9 @@
     </div>
 
     <div id="basemap-container" class="basemap">
-        <div id="basemap-content" class="basemap">
-        </div>
+        <img class="basemap__btns" id="standard-map" src="img/osm.jpeg" onclick="switchBasemap(event)" />
+        <img class="basemap__btns" id="dark-map" src="img/dark.jpeg" onclick="switchBasemap(event)" />
+        <img class="basemap__btns" id="sat-map" src="img/sat.jpeg" onclick="switchBasemap(event)" />
     </div>
 
     <div id="settings-container">
@@ -285,7 +286,7 @@
                     this point</div>
             </div>
 
-            <input type="submit" value="Search" id="submit-btn">
+            <input type="submit" value="Search" id="filter__submit-btn">
         </form>
     </div>
 
