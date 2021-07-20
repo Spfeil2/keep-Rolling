@@ -285,12 +285,6 @@ const filterTypes = (event) => {
 
     if (e.classList.value == "filter__options") {
         if (e.style.backgroundColor === "rgb(255, 137, 6)") {
-
-            console.log(document.getElementById("filter-container").style.backgroundColor)
-            if (document.getElementById("filter-container").style.backgroundColor === "#fff") {
-                console.log("hi")
-            }
-
             e.style.backgroundColor = "white"
             e.style.boxShadow = "none"
             e.style.border = "1px solid #dee0e4"
@@ -302,8 +296,18 @@ const filterTypes = (event) => {
             e.style.boxShadow = "rgb(0 0 0 / 35%) 0px 5px 15px"
             e.style.border = "none"
 
+            console.log(e.style.backgroundColor)
+
+
             // add type to selectedTypes
             selectedTypes.push(e.getAttribute("value"))
         }
     }
+}
+
+// stop locate
+const stopLoc = (event) =>{
+    console.log("test")
+    //lc.stop()
+    lc.stopFollowing()
 }
