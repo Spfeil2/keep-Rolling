@@ -492,10 +492,14 @@ body {
     position: absolute;
     bottom: 7.4em;
     right: 2em;
-    background-color: var(--bg-filter-btn);
+    background-color: var(--bg-color);
     box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
     fill: var(--bg-filter-fill);
     border: 1px solid var(--btn-border);
+}
+
+#gps-not-fixed {
+    display: none;
 }
 
 .leaflet-control-zoom-in, .leaflet-control-zoom-out {

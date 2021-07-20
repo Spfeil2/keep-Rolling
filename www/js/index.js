@@ -312,9 +312,18 @@ const filterTypes = (event) => {
 let isGeolocationActive = true;
 const toggleGelocation = () =>{
     if (isGeolocationActive) {
+        // change svg
+        document.getElementById("gps-fixed").style.display = "none"
+        document.getElementById("gps-not-fixed").style.display = "inline"
+
+        // stop following
         lc.stopFollowing()
         isGeolocationActive = false;
     } else {
+        // change svg
+        document.getElementById("gps-fixed").style.display = "inline"
+        document.getElementById("gps-not-fixed").style.display = "none"
+
         map.locate()
         lc.start()
         isGeolocationActive = true;
@@ -324,6 +333,10 @@ const toggleGelocation = () =>{
 // stop following on dragend
 map.on('dragend',function(e){
     if (isGeolocationActive) {
+        // change svg
+        document.getElementById("gps-fixed").style.display = "none"
+        document.getElementById("gps-not-fixed").style.display = "inline"
+
         lc.stopFollowing()
         isGeolocationActive = false;
     } 
