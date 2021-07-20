@@ -112,7 +112,6 @@ map.on("click", (e) => {
 
 L.control.scale().addTo(map)
 
-
 // zoom to current location on initial page load
 const geolocate = () => {
     navigator.geolocation.getCurrentPosition(function(location) {
@@ -123,12 +122,24 @@ const geolocate = () => {
 
 geolocate()
 
+// get lat long
+let coordinates;
+const onLocationFound = (e) => {
+    coordinates = e.latlng
+}
+
+/*
+setInterval(() => {
+    console.log(coordinates)    
+}, 2000);
+*/
+
+  
+map.on('locationfound', onLocationFound);
 
 // submit form
 const form = document.getElementById("drawer__form")
-form.onsubmit =  (e) => {   
-    e.preventDefault()
-
+form.onsubmit = (e) => {  
     // get input values 
     const type = form.deficiency.value;
     const name = form.name.value;
@@ -137,14 +148,17 @@ form.onsubmit =  (e) => {
     const description = document.getElementsByClassName("drawer__input--textarea")[0].value;
 
     let date = new Date().toISOString().slice(0, 10)
-
+    
     const data = {
         type,
         name,
         mail,
         description,
         date,
+        coordinates
     }
+
+    console.log(data)
 
     try {
         //const res = await axios.post("http://igf-srv-lehre.igf.uni-osnabrueck.de:41783/meldungen", data)
@@ -152,6 +166,8 @@ form.onsubmit =  (e) => {
     } catch (error) {
         console.log(error);
     } 
+
+    e.preventDefault()
 }
 
 const lc = L.control.locate({
