@@ -339,14 +339,6 @@ body {
     background-color: white;
 }
 
-#drawer__input--image {
-    padding: 10px;
-    border: 1px dashed #BBB;
-
-    background-color: var(--bg-input-color);
-    cursor: pointer;
-    margin-bottom: 1.5em;
-}
 
 .drawer__btns {
     display: block;
