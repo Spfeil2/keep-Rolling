@@ -307,25 +307,24 @@ const filterTypes = (event) => {
     }
 }
 
-// stop locate
+// toggle geolocation
+// follow is enabled per default
 let isGeolocationActive = true;
 const toggleGelocation = () =>{
     if (isGeolocationActive) {
-        console.log("start")
-        map.locate()
-        lc.start()
+        lc.stopFollowing()
         isGeolocationActive = false;
     } else {
-        console.log("stop")
-        lc.stopFollowing()
+        map.locate()
+        lc.start()
         isGeolocationActive = true;
     }
 }
 
+// stop following on dragend
 map.on('dragend',function(e){
     if (isGeolocationActive) {
-        console.log("stop drag")
         lc.stopFollowing()
-        isGeolocationActive = true;
-    }
+        isGeolocationActive = false;
+    } 
 });
