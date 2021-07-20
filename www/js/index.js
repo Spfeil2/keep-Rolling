@@ -351,10 +351,10 @@ map.on('dragend',function(e){
         document.getElementById("gps-not-fixed").style.display = "inline"
 
         map.locate({
-            watch: true,
-            enableHighAccuracy: true,
+            watch: false,
+            enableHighAccuracy: false,
             position: "bottomright",
-            setView: true,
+            setView: false,
             follow: false
         })
 
