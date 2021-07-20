@@ -149,6 +149,7 @@ const lc = L.control.locate({
     enableHighAccuracy: true,
     position: "bottomright",
     setView: true,
+    follow: true
 }).addTo(map);
 
 // show marker and zoom to current location on load
@@ -307,8 +308,24 @@ const filterTypes = (event) => {
 }
 
 // stop locate
-const stopLoc = (event) =>{
-    console.log("test")
-    //lc.stop()
-    lc.stopFollowing()
+let isGeolocationActive = true;
+const toggleGelocation = () =>{
+    if (isGeolocationActive) {
+        console.log("start")
+        map.locate()
+        lc.start()
+        isGeolocationActive = false;
+    } else {
+        console.log("stop")
+        lc.stopFollowing()
+        isGeolocationActive = true;
+    }
 }
+
+map.on('dragend',function(e){
+    if (isGeolocationActive) {
+        console.log("stop drag")
+        lc.stopFollowing()
+        isGeolocationActive = true;
+    }
+});

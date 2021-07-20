@@ -27,6 +27,11 @@
     --btn-border: none;
 }
 
+a {
+    text-decoration: none;
+    color: var(--headline)
+}
+
 input:focus {
     outline: none !important;
     border-bottom: 1px solid #0f0e17;
@@ -478,48 +483,27 @@ body {
     bottom: 25%;
 }
 
-.leaflet-control-zoom {
-    border: none !important;
+#stop-locate {
+    border: none;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    z-index: 500;
+    position: absolute;
+    bottom: 7.4em;
+    right: 2em;
+    background-color: var(--bg-filter-btn);
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+    fill: var(--bg-filter-fill);
+    border: 1px solid var(--btn-border);
 }
-
-
-.leaflet-control-locate.active.following a {
-    color: #d9376e !important;
-}
-
-.leaflet-control-locate.active a {
-    color: white!important;
-}
-
-.leaflet-control-locate a {
-    color: white!important;
-}
-
 
 .leaflet-control-zoom-in, .leaflet-control-zoom-out {
     display: none !important;
 }
 
-.leaflet-bar-part-single {
-    position: absolute !important;
-    top: 15px !important;
-    left: 15px !important;
-}
-
 .leaflet-control-locate  {
-    position: absolute !important;
-    bottom: 7em !important;
-    right: 1.5em !important;
-    border-radius: 50% !important;
-    width: 60px !important; 
-    height: 60px !important;
-    background-color: var(--bg-color) !important;
-    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px !important;
-    border: 1px solid var(--btn-border) !important;
-}
-
-.leaflet-bar-part-single {
-    background-color: var(--bg-color) !important;
+    display: none !important;
 }
 
 .leaflet-control-locate-location circle {
