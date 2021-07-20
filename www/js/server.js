@@ -5,7 +5,6 @@ const { Client } = require('pg');
 const app = express()
 
 app.use(cors())
-// parsen
 app.use(express.json())
 
 const client = new Client({
@@ -18,24 +17,21 @@ const client = new Client({
 
 // connect client global to allow reuse (https://node-postgres.com/api/client)
 client.connect(err => {
-    if (err) {
-      console.error('connection error', err.stack)
-    } else {
-      console.log('connected')
-    }
-  })
+  if (err) {
+    console.error('connection error', err.stack)
+  } else {
+    console.log('connected')
+  }
+})
 
 // post request insert new meldungen
 app.post('/meldungen', async (req, res) => {
     try {
-        console.log(req.body)
+        const {name, mail, description, type, date} = req.body
 
-        let date = new Date();
+        const latitude = 2323.22
+        const longitude = 2323.22
 
-        console.log(date)
-
-        const {name, mail, description, type, latitude, longitude} = req.body
-        // sql injections verhindern?
         const sql_insert = `INSERT INTO meldungen (name, date, mail, description, type, latitude, longitude) VALUES('${name}', '${date}', '${mail}', '${description}', '${type}', '${latitude}', '${longitude}')`
         const response = await client.query(sql_insert)
         console.log(response)
@@ -49,52 +45,60 @@ app.post('/meldungen', async (req, res) => {
 
 // get all data
 app.get('/getAll', async (req, res) => {
-    try{
-        const sql_result = await client.query("SELECT * FROM meldungen")
-        res.status(200).send({results:sql_result.rows})
-    } catch (e) {
-        console.log(e)
-    }
-  })
+  try{
+      const sql_result = await client.query("SELECT * FROM meldungen")
+      res.status(200).send({results:sql_result.rows})
+  } catch (e) {
+      console.log(e)
+  }
+})
 
   
-  app.get('/filterType', async (req, res) => {
-    try{
-        const sql_result = await client.query("SELECT * FROM meldungen WHERE type='vegetation'")
-        res.status(200).send({results:sql_result.rows})
-    } catch (e) {
-        console.log(e)
-    }
-  })
+app.get('/filterType', async (req, res) => {
+  try{
+      const sql_result = await client.query("SELECT * FROM meldungen WHERE type='vegetation'")
+      res.status(200).send({results:sql_result.rows})
+  } catch (e) {
+      console.log(e)
+  }
+})
 
-  app.get('/filterDate', async (req, res) => {
-    try{
-        const sql_result = await client.query("SELECT * FROM meldungen WHERE date BETWEEN '20210715' and '20210717'")
-        res.status(200).send({results:sql_result.rows})
-    } catch (e) {
-        console.log(e)
-    }
-  })
+app.get('/filterDate', async (req, res) => {
+  try{
+      const sql_result = await client.query("SELECT * FROM meldungen WHERE date BETWEEN '20210715' and '20210717'")
+      res.status(200).send({results:sql_result.rows})
+  } catch (e) {
+      console.log(e)
+  }
+})
 
-  app.get('/filterDateAge', async (req, res) => {
-    try{
-        const sql_result = await client.query("SELECT * FROM meldungen WHERE date > (CURRENT_DATE - INTERVAL '3 days');")
-        res.status(200).send({results:sql_result.rows})
-    } catch (e) {
-        console.log(e)
-    }
-  })
+app.get('/filterDateAge', async (req, res) => {
+  try{
+      const sql_result = await client.query("SELECT * FROM meldungen WHERE date > (CURRENT_DATE - INTERVAL '3 days');")
+      res.status(200).send({results:sql_result.rows})
+  } catch (e) {
+      console.log(e)
+  }
+})
 
 
-  app.get('/updateBehoben', async (req, res) => {
-    try{
-        const sql_result = await client.query("UPDATE meldungen SET behoben = true WHERE id =12")
-        res.status(200).send({results:sql_result.rows})
-    } catch (e) {
-        console.log(e)
-    }
-  })
+app.get('/updateBehoben', async (req, res) => {
+  try{
+      const sql_result = await client.query("UPDATE meldungen SET behoben = true WHERE id =12")
+      res.status(200).send({results:sql_result.rows})
+  } catch (e) {
+      console.log(e)
+  }
+})
 
+app.get('/delete', async (req, res) => {
+  try{
+      const sql_result = await client.query("DELETE meldungen WHERE name = Dirk Mennecke")
+      res.status(200).send({results:sql_result.rows})
+  } catch (e) {
+      console.log(e)
+  }
+})
 
 // unique port, listen ist das letzte was ausgeführt werden soll 
 const server = app.listen(41783, () => {

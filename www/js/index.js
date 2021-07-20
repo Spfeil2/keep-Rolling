@@ -113,7 +113,6 @@ map.on("click", (e) => {
 L.control.scale().addTo(map)
 
 
-
 // zoom to current location on initial page load
 const geolocate = () => {
     navigator.geolocation.getCurrentPosition(function(location) {
@@ -124,9 +123,19 @@ const geolocate = () => {
 
 geolocate()
 
+// delete entries
+document.getElementById("delete").addEventListener("onclick", async () => {
+    try {
+        const res = await axios.delete("http://igf-srv-lehre.igf.uni-osnabrueck.de:41783/meldungen")
+        console.log(res)
+    } catch (error) {
+        console.log(error);
+    } 
+})
+
 // submit form
 const form = document.getElementById("drawer__form")
-form.onsubmit = async (e) => {    
+form.onsubmit =  (e) => {   
     e.preventDefault()
 
     // get input values 
@@ -136,18 +145,19 @@ form.onsubmit = async (e) => {
     //const image = form.image.value;
     const description = document.getElementsByClassName("drawer__input--textarea")[0].value;
 
+    let date = new Date().toISOString().slice(0, 10)
+
     const data = {
         type,
         name,
         mail,
-        description
+        description,
+        date,
     }
 
-    console.log(data)
-
     try {
-        const res = await axios.post("http://igf-srv-lehre.igf.uni-osnabrueck.de:41783/meldungen", data)
-        console.log(res.data.message)
+        //const res = await axios.post("http://igf-srv-lehre.igf.uni-osnabrueck.de:41783/meldungen", data)
+        //console.log(res)
     } catch (error) {
         console.log(error);
     } 
