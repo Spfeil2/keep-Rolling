@@ -59,8 +59,6 @@
 </head>
 
 <body>
-    
-
     <nav id="keep-rolling">
         <h1 id="keep-rolling-title">keep rolling</h1>
 
@@ -162,20 +160,23 @@
                     </div>
 
                     <label class="drawer__label">*Please enter your name</label>
-                    <input type="text" name="name" class="drawer__input" required>
+                    <input type="text" name="name" class="drawer__input" >
 
                     <label class="drawer__label">*Please enter your e-mail</label>
-                    <input type="text" name="email" class="drawer__input" required>
+                    <input type="text" name="email" class="drawer__input" >
 
 
                     <label class="drawer__label">Please provide an image if possible</label>
-                    <button onclick="foto()" id="foto"> foto </button>
-
+                    <div id="drawer__take-photo">
+                        <img id="drawer__foto-image" src="./img/foto.svg"/>
+                        <h1 id="drawer__foto-text"> click here to take a picture </h1>
+                    </div>
 
                     <label class="drawer__label">*Please provide a description</label>
                     <textarea id="text" name="text" name="description" class="drawer__input--textarea"
-                        required></textarea>
-
+                        ></textarea>
+                    
+                    
                     <input type="submit" value="Submit" id="submit-btn">
                 </form>
             </div>
@@ -263,7 +264,7 @@
                     d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
             </svg>
         </a>
-
+ 
         <form id="filter__content" onsubmit="submitSearch(event)">
             <h1 id="filter__title">Search for specific deficiencies</h1>
 
@@ -293,14 +294,18 @@
 
                 <div class="filter__options" value="parking">Bike lane is often parked in this place</div>
 
-                <div class="filter__options" value="traffic_lights">Traffic light switching is unfavorable for cyclists
+                <div class="filter__options" value="traffic_lights">Traffic light switching is unfavorable for cyclists 
                     at
                     this point</div>
+                
             </div>
 
             <input type="submit" value="Search" id="filter__submit-btn">
         </form>
+       
     </div>
+
+    
 
     <!-- open drawer -->
     <button onclick="openFilter()" id="open-filter-btn">

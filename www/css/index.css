@@ -312,6 +312,7 @@ body {
     display: block;
     font-size: 1.1em;
     font-weight: 500;
+    margin-top: 2.5em;
     margin-bottom: 1em;
     color: #929191;
 }
@@ -396,6 +397,34 @@ body {
     margin-top: 2em;
 }
   
+#drawer__take-photo {
+    height:150px;
+    width:100%;
+    background-color: rgb(240, 240, 240);
+    position:relative;
+    border-radius: 5px;
+    border:2px dashed #ff8e3c;
+}
+
+#drawer__foto-image {
+    position: absolute;
+    margin: auto;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height:44px;
+    width:auto;
+}
+
+#drawer__foto-text {
+    font-size:1.2em;
+    color:#0d0d0d;
+    text-align:center;
+    position:relative;
+    top:70%;
+    transform: translateY(-50%)
+}
 
 /* Position and style the close button (top right corner) */
 .closebtn {

@@ -23,7 +23,7 @@ document.addEventListener('deviceready', onDeviceReady, false);
 
 function onDeviceReady() {
     // Cordova is now initialized. Have fun!
-
+    
     console.log('Running cordova-' + cordova.platformId + '@' + cordova.version);
     document.getElementById('deviceready').classList.add('ready');
 }
@@ -369,11 +369,10 @@ map.on('dragend',function(e){
     } 
 });
 
-
-
-const foto = () => {
+// take picture
+document.getElementById("drawer__take-photo").addEventListener("click", () => {
     navigator.camera.getPicture(onSuccess, onFail, { quality: 25,
-        destinationType: Camera.DestinationType.DATA_URL
+        destinationType: Camera.DestinationType.FILE_URI
     });
     
     function onSuccess(imageData) {
@@ -384,4 +383,4 @@ const foto = () => {
     function onFail(message) {
         alert('Failed because: ' + message);
     }
-}
+})
