@@ -126,7 +126,7 @@ geolocate()
 
 // submit form
 const form = document.getElementById("drawer__form")
-form.onsubmit = (e) => {    
+form.onsubmit = async (e) => {    
     e.preventDefault()
 
     // get input values 
@@ -144,6 +144,13 @@ form.onsubmit = (e) => {
     }
 
     console.log(data)
+
+    try {
+        const res = await axios.post("http://igf-srv-lehre.igf.uni-osnabrueck.de:41783/meldungen", data)
+        console.log(res.data.message)
+    } catch (error) {
+        console.log(error);
+    } 
 }
 
 const lc = L.control.locate({

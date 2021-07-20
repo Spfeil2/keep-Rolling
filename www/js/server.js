@@ -8,7 +8,6 @@ app.use(cors())
 // parsen
 app.use(express.json())
 
-
 const client = new Client({
     "host": "127.0.0.1",
     "port": 5432,
@@ -31,7 +30,11 @@ app.post('/meldungen', async (req, res) => {
     try {
         console.log(req.body)
 
-        const {name, date, mail, description, type, latitude, longitude} = req.body
+        let date = new Date();
+
+        console.log(date)
+
+        const {name, mail, description, type, latitude, longitude} = req.body
         // sql injections verhindern?
         const sql_insert = `INSERT INTO meldungen (name, date, mail, description, type, latitude, longitude) VALUES('${name}', '${date}', '${mail}', '${description}', '${type}', '${latitude}', '${longitude}')`
         const response = await client.query(sql_insert)
@@ -94,7 +97,7 @@ app.get('/getAll', async (req, res) => {
 
 
 // unique port, listen ist das letzte was ausgeführt werden soll 
-const server = app.listen(41785, () => {
+const server = app.listen(41783, () => {
     const port = server.address().port
     console.log(`server running on port ${port}`)
 })
