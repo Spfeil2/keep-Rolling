@@ -309,6 +309,16 @@ const filterTypes = (event) => {
     }
 }
 
+const stopGeolocation = () => {
+    map.locate({
+        watch: true,
+        enableHighAccuracy: true,
+        position: "bottomright",
+        setView: false,
+        follow: false
+    })
+}
+
 // toggle geolocation
 // follow is enabled per default
 let isGeolocationActive = true;
@@ -320,13 +330,7 @@ const toggleGelocation = () =>{
         document.getElementById("gps-fixed").style.display = "none"
         document.getElementById("gps-not-fixed").style.display = "inline"
 
-        map.locate({
-            watch: true,
-            enableHighAccuracy: true,
-            position: "bottomright",
-            setView: false,
-            follow: false
-        })
+        stopGeolocation()
 
         // stop following
         lc.stopFollowing()
@@ -358,13 +362,7 @@ map.on('dragend',function(e){
         document.getElementById("gps-fixed").style.display = "none"
         document.getElementById("gps-not-fixed").style.display = "inline"
 
-        map.locate({
-            watch: true,
-            enableHighAccuracy: true,
-            position: "bottomright",
-            setView: false,
-            follow: false
-        })
+        stopGeolocation()
 
         lc.stopFollowing()
         isGeolocationActive = false;
