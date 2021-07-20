@@ -58,8 +58,6 @@
     <title>keep rolling</title>
 </head>
 
-<button>test</button>
-
 <body>
     <nav id="keep-rolling">
         <h1 id="keep-rolling-title">keep rolling</h1>
@@ -185,9 +183,20 @@
     </div>
 
     <div id="basemap-container" class="basemap">
-        <img class="basemap__btns" id="standard-map" src="img/osm.jpeg" onclick="switchBasemap(event)" />
-        <img class="basemap__btns" id="dark-map" src="img/dark.jpeg" onclick="switchBasemap(event)" />
-        <img class="basemap__btns" id="sat-map" src="img/sat.jpeg" onclick="switchBasemap(event)" />
+        <div class="basemap__div">
+            <img class="basemap__btns" id="standard-map" src="img/osm.jpeg" onclick="switchBasemap(event)" />
+            <h1 class="basemap__text">OSM</h1>
+        </div>
+
+        <div class="basemap__div">
+            <img class="basemap__btns" id="dark-map" src="img/dark.jpeg" onclick="switchBasemap(event)" />
+            <h1 class="basemap__text">Dark</h1>
+        </div>
+
+        <div class="basemap__div">
+            <img class="basemap__btns" id="sat-map" src="img/sat.jpeg" onclick="switchBasemap(event)" />
+            <h1 class="basemap__text">Satellite</h1>
+        </div>
     </div>
 
     <div id="settings-container">
@@ -257,9 +266,8 @@
         <form id="filter__content" onsubmit="submitSearch(event)">
             <h1 id="filter__title">Search for specific deficiencies</h1>
 
-            <h2 class="filter__labels">Show entries which are _ days old:</h2>
+            <h2 class="filter__labels">Specify days:</h2>
             <input type="number" id="filter__days-input" name="days" min="0" placeholder="e.g. 3">
-
 
             <h2 class="filter__labels">Select a time range:</h2>
             <span class="datepicker-toggle">
