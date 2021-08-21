@@ -576,24 +576,17 @@ const makeGetRequest = async () => {
 
 // toggle obstruction preview container
 const toggleObstructionPreview = () => {
-    // add informations to hmtl
-    changeHTML()
+  // add informations to hmtl
+  changeHTML()
 
+  console.log(openObstructionPreviewContainerSwitch)
 
   const container = document.getElementById("obstruction-preview-container");
 
   container.style.display = "grid"
 
-  
- /*
-  if (container.style.height === "0px") {
-      container.style.height = "161px";
-      openObstructionPreviewContainerSwitch = true
-    } else {
-      // container.style.height = "161px";
-      console.log("hi")
-    }
-    */
+  container.style.height = "161px";
+  openObstructionPreviewContainerSwitch = true
 };
 
 const clickOnFeature = async (e) => {
