@@ -3,7 +3,21 @@
 let basemapSwitch = true;
 let pickLocationSwitch = true;
 let coordinates;
-let openObstructionPreviewContainerSwitch = false
+let openObstructionPreviewContainerSwitch = false;
+let clickObstructionInformations;
+
+// neu!!!
+// close clicked-marker-container
+document.getElementById("clicked-marker-container-close").addEventListener("click", () => {
+  document.getElementById("clicked-marker-container").style.display = "none"
+})
+
+// show clicked-marker-container
+document.querySelector(".obstruction-preview__btn").addEventListener("click", () => {
+  document.getElementById("clicked-marker-container").style.display = "flex"
+})
+
+// ende neu!!!
 
 document.addEventListener("click", (e) => {
   const container = document.getElementById("obstruction-preview-container");
@@ -238,21 +252,6 @@ const lc = L.control
 
 // show marker and zoom to current location on load
 lc.start();
-
-document
-  .getElementById("keep-rolling-new-deficiency")
-  .addEventListener("click", () => {
-  });
-
-// show welcome screen on click on title
-document.getElementById("keep-rolling-title").addEventListener("click", () => {
-  document.getElementById("welcome-screen").style.display = "block";
-
-  // stop showing welcome screen after 4 seconds
-  setTimeout(() => {
-    document.getElementById("welcome-screen").style.display = "none";
-  }, 4000);
-});
 
 // toggle basemap container
 const toggleBasemaps = () => {
@@ -532,7 +531,26 @@ const violetIcon = new L.Icon({
   shadowSize: [41, 41],
 });
 
+const changeHTML = () => {
+  const splitDate = clickObstructionInformations.date.split("T")
+  let type;
+
+  if (clickObstructionInformations.type == "object") {
+    type = "No informations"
+  } else {
+    type = clickObstructionInformations.type
+  }
+
+  console.log(clickObstructionInformations)
+
+  document.getElementById("clicked-marker__content-type-js").innerHTML = type
+  document.getElementById("obstruction-preview__date").innerHTML = splitDate[0]
+}
+
 const openObstructionPreviewContainer = () => {
+  // add informations to hmtl
+  changeHTML()
+
   document.getElementById("obstruction-preview-container").style.display = "grid"
   openObstructionPreviewContainerSwitch = true
 }
@@ -555,12 +573,13 @@ const makeGetRequest = async () => {
 }
 
 const clickOnFeature = async (e) => {
-  openObstructionPreviewContainer()
-
   try {
     // e.target.feature.properties.id
     const response = await axios.get(`http://igf-srv-lehre.igf.uni-osnabrueck.de:41781/getObstructionById/${e.target.feature.properties.id}`)
-    console.log(response.data.rows[0])
+
+    clickObstructionInformations = response.data.rows[0]
+
+    openObstructionPreviewContainer()
 
   } catch (error) {
     console.log(error)

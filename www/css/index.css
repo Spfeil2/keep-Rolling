@@ -474,58 +474,6 @@ body {
   fill: var(--headline);
 }
 
-#keep-rolling {
-  background-color: var(--bg-color);
-  width: 100%;
-  height: 50px;
-  position: absolute;
-  z-index: 5000;
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-  border-bottom: 1px solid var(--btn-border);
-}
-
-#keep-rolling-title {
-  font-size: 2em;
-  display: inline-block;
-  margin: 0;
-  position: relative;
-  top: 48%;
-  left: 1em;
-  transform: translateY(-50%);
-  color: #ff8e3c;
-}
-
-#keep-rolling-new-deficiency {
-  display: inline-block;
-  width: 140px;
-  height: 30px;
-  border-radius: 5px;
-  border: 1px solid #c45c12;
-  background-color: #ff8e3c;
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-  position: absolute;
-  top: 50%;
-  right: 2em;
-  transform: translateY(-50%);
-}
-
-#keep-rolling-new-deficiency-icon {
-  position: absolute;
-  left: 5px;
-  top: 4px;
-  fill: #eff0f3;
-  width: 1.8em;
-  height: auto;
-}
-
-#keep-rolling-new-deficiency-title {
-  position: absolute;
-  left: 32px;
-  top: 4px;
-  font-size: 1.2em;
-  color: #eff0f3;
-}
-
 #welcome-screen {
   position: absolute;
   z-index: 50000;
@@ -612,6 +560,90 @@ body {
   background-color: var(--bg-color);
 }
 
+#toggle-pick-location {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  position: absolute;
+  z-index: 4999;
+  right: 2em;
+  top: 2em;
+  border: none;
+  box-shadow: rgb(0 0 0 / 16%) 0px 3px 6px, rgb(0 0 0 / 23%) 0px 3px 6px;
+  background-color: var(--bg-color);
+}
+
+/* clicked-marker-container */
+#clicked-marker-container {
+  width: 100%;
+  position: absolute;
+  height: 100%;
+  z-index: 5000;
+  background: rgba(204, 204, 204, 0.6);
+
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+#clicked-marker-container-content {
+  position: relative;
+  background-color: white;
+  width: 80%;
+  height: 70%;
+  overflow: scroll;
+  border-radius: 12px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+#clicked-marker-container-close {
+  position: absolute;
+  right: 1em;
+  top: 1em;
+  background-color: white;
+  border-radius: 4px;
+}
+
+.clicked-marker-container__image-container {
+  width: 100%;
+  height: 40%;
+}
+
+.clicked-marker-container__image {
+  object-fit: fill;
+  width: 100%;
+  height: 100%;
+  border-top-right-radius: 8px;
+  border-top-left-radius: 8px;
+}
+
+.clicked-marker__content-container {
+  width: 80%;
+  margin: 0 auto;
+}
+
+.clicked-marker__content-h1 {
+  margin-bottom: 0;
+}
+
+.clicked-marker__content-type {
+  font-size: 1.2em;
+  font-weight: 500;
+  color: grey;
+  margin-top: .2em;
+}
+
+.clicked-marker__content-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin: 2em 0;
+}
+
+.clicked-marker__content-title {
+  font-size: 1.2em;
+  font-weight: 500;
+  margin: 0;
+}
 
 /*  Obstruction preview */
 #obstruction-preview-container {
@@ -624,14 +656,10 @@ body {
   border-radius: 18px;
   z-index: 1001;
   background-color: white;
-  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
   display: none;
   grid-template-columns: 30% 70%;
-
-}
-
-.obstruction-preview__image-container {
-
+  overflow: scroll;
 }
 
 .obstruction-preview__text-container {
@@ -640,17 +668,54 @@ body {
 }
 
 .obstruction-preview__text-container h1 {
-  font-size: 1.8em;
-  margin-top: .4em;
+  font-size: 1.6em;
+  margin-top: .8em;
   margin-bottom: .2em;
 }
 
 .obstruction-preview__text-container p {
-  font-size: 1.1em;
-  margin: 0;
+  font-size: 1.2em;
+  margin: 0 0 2em 0;
   font-weight: 500;
   color: grey;
+}
 
+.obstruction-preview__svg-container {
+  display: inline;
+}
+
+.obstruction-preview__svg {
+  vertical-align: middle;
+  display: inline-block;
+  width: 15px;
+}
+
+.obstruction-preview__date {
+  vertical-align: middle;
+  display: inline-block;
+  color: grey;
+  font-size: 14px;
+}
+
+.obstruction-preview__status {
+  vertical-align: middle;
+  display: inline-block;
+  color: grey;
+  font-size: 14px;
+  color: red;
+  font-weight: 500;
+}
+
+.obstruction-preview__btn {
+  border: none;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;  
+  background-color: #ff8e3c;
+  border-radius: 4px;
+  width: 100px;
+  padding: 6px;
+  display: inline;
+  font-size: 14px;
+  float: right;
 }
 
 .obstruction-preview__image {

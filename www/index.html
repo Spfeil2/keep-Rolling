@@ -32,21 +32,6 @@
 </head>
 
 <body>
-  <nav id="keep-rolling">
-    <h1 id="keep-rolling-title">keep rolling</h1>
-
-    <div id="keep-rolling-new-deficiency" onclick="togglePickLocation()">
-      <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"
-        id="keep-rolling-new-deficiency-icon">
-        <path d="M0 0h24v24H0z" fill="none" />
-        <path
-          d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" />
-      </svg>
-
-      <span id="keep-rolling-new-deficiency-title">New obstruction</span>
-    </div>
-  </nav>
-
   <div id="welcome-screen">
     <img id="main_logo" src="./img/app_logo.svg" />
     <svg width="491" height="582" viewBox="0 0 491 582" fill="none" xmlns="http://www.w3.org/2000/svg" id="bicyle"
@@ -291,6 +276,53 @@
     </form>
   </div>
 
+  <div id="clicked-marker-container">
+    <div id="clicked-marker-container-content">
+      <div class="clicked-marker-container__image-container">
+        <img class="clicked-marker-container__image"
+          src="https://media.istockphoto.com/photos/new-york-city-asphalt-road-on-busy-intersection-streets-with-car-at-picture-id1133502463?k=6&m=1133502463&s=612x612&w=0&h=oTnWw3cY6j2AKWQ8efMkHEgV-N4LQFNN9gWOGM-qLEs=" />
+      </div>
+      <svg id="clicked-marker-container-close" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24"
+        width="24px" fill="#ff8906">
+        <path d="M0 0h24v24H0z" fill="none" />
+        <path
+          d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+      </svg>
+      <div class="clicked-marker__content-container">
+        <h1 class="clicked-marker__content-h1">Obstruction</h1>
+        <p class="clicked-marker__content-type">Obstruction type: <span class="clicked-marker__content-type-js"></span>
+        </p>
+
+        <div class="clicked-marker__content-grid">
+          <div class="obstruction-preview__svg-container">
+            <p class="clicked-marker__content-title">Date</p>
+            <svg class="obstruction-preview__svg" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24"
+              width="24px" fill="#000000">
+              <path d="M0 0h24v24H0z" fill="none" />
+              <path
+                d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z" />
+            </svg>
+            <span class="obstruction-preview__date">15.06.2019</span>
+          </div>
+          <div>
+            <p class="clicked-marker__content-title">Status</p>
+            <span class="obstruction-preview__status">inactive</span>
+          </div>
+        </div>
+
+        <p class="clicked-marker__content-title">Description</p>
+        <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
+          dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet
+          clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, con
+        </p>
+
+        <p class="clicked-marker__content-title">Reported by</p>
+        <p class="">Max Mustermann</p>
+
+      </div>
+    </div>
+  </div>
+
   <div id="obstruction-preview-container" class="obstruction-preview-container">
     <div class="obstruction-preview__image-container">
       <img class="obstruction-preview__image"
@@ -298,7 +330,18 @@
     </div>
     <div class="obstruction-preview__text-container">
       <h1>Obstruction</h1>
-      <p>Obstruction type: vegetation</p>
+      <p class="clicked-marker__content-type">Obstruction type: <span id="clicked-marker__content-type-js"></span>
+      <div class="obstruction-preview__svg-container">
+        <svg class="obstruction-preview__svg" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24"
+          width="24px" fill="#000000">
+          <path d="M0 0h24v24H0z" fill="none" />
+          <path
+            d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z" />
+        </svg>
+        <span class="obstruction-preview__date" id="obstruction-preview__date"></span>
+      </div>
+      <button class="obstruction-preview__btn">Show more</button>
+
     </div>
 
   </div>
@@ -333,6 +376,13 @@
         <path
           d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z" />
       </g>
+    </svg>
+  </button>
+
+  <button id="toggle-pick-location" onclick="togglePickLocation()">
+    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#ff8906">
+      <path d="M0 0h24v24H0z" fill="none" />
+      <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
     </svg>
   </button>
 
