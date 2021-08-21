@@ -3,6 +3,20 @@
 let basemapSwitch = true;
 let pickLocationSwitch = true;
 let coordinates;
+let openObstructionPreviewContainerSwitch = false
+
+document.addEventListener("click", (e) => {
+  const container = document.getElementById("obstruction-preview-container");
+  // detect click outside basemap container to close it
+  // check if anything without the class name "basemap" got clicked
+  if (!e.target.classList.contains("obstruction-preview-container") && openObstructionPreviewContainerSwitch) {
+    openObstructionPreviewContainerSwitch = false
+    container.style.display = "grid";
+  } else {
+    container.style.display = "none";
+    openObstructionPreviewContainerSwitch = true
+  }
+});
 
 document.addEventListener("click", (e) => {
   const container = document.getElementById("basemap-container");
@@ -518,12 +532,14 @@ const violetIcon = new L.Icon({
   shadowSize: [41, 41],
 });
 
+const openObstructionPreviewContainer = () => {
+  document.getElementById("obstruction-preview-container").style.display = "grid"
+  openObstructionPreviewContainerSwitch = true
+}
 
 document.addEventListener("DOMContentLoaded", function (event) {
   fetchMarker();
 });
-
-
 
 // get all locations
 const makeGetRequest = async () => {
@@ -539,6 +555,8 @@ const makeGetRequest = async () => {
 }
 
 const clickOnFeature = async (e) => {
+  openObstructionPreviewContainer()
+
   try {
     // e.target.feature.properties.id
     const response = await axios.get(`http://igf-srv-lehre.igf.uni-osnabrueck.de:41781/getObstructionById/${e.target.feature.properties.id}`)
