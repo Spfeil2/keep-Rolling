@@ -6,7 +6,6 @@ let coordinates;
 let openObstructionPreviewContainerSwitch = false;
 let clickObstructionInformations;
 
-// neu!!!
 // close clicked-marker-container
 document.getElementById("clicked-marker-container-close").addEventListener("click", () => {
   document.getElementById("clicked-marker-container").style.display = "none"
@@ -15,20 +14,32 @@ document.getElementById("clicked-marker-container-close").addEventListener("clic
 // show clicked-marker-container
 document.querySelector(".obstruction-preview__btn").addEventListener("click", () => {
   document.getElementById("clicked-marker-container").style.display = "flex"
+
+  // close preview container
+  document.getElementById("obstruction-preview-container").style.display = "none"
 })
 
-// ende neu!!!
+function hasParentWithMatchingSelector (target, selector) {
+  return [...document.querySelectorAll(selector)].some(el =>
+    el !== target && el.contains(target)
+  )
+}
 
 document.addEventListener("click", (e) => {
   const container = document.getElementById("obstruction-preview-container");
   // detect click outside basemap container to close it
   // check if anything without the class name "basemap" got clicked
-  if (!e.target.classList.contains("obstruction-preview-container") && openObstructionPreviewContainerSwitch) {
-    openObstructionPreviewContainerSwitch = false
-    container.style.display = "grid";
-  } else {
-    container.style.display = "none";
+  const isChildElement = hasParentWithMatchingSelector(e.target, "#obstruction-preview-container")
+
+  if (container.style.height === "161px" && (isChildElement || e.target.classList.contains("obstruction-preview-container")) && openObstructionPreviewContainerSwitch) {
+    container.style.height = "161px"
     openObstructionPreviewContainerSwitch = true
+  } else if (container.style.height === "161px" && (!isChildElement || e.target.classList.contains("obstruction-preview-container")) && openObstructionPreviewContainerSwitch) {
+    container.style.height = "0px"
+    openObstructionPreviewContainerSwitch = true
+  } else {
+    container.style.height = "0px"
+    openObstructionPreviewContainerSwitch = false
   }
 });
 
@@ -541,19 +552,10 @@ const changeHTML = () => {
     type = clickObstructionInformations.type
   }
 
-  console.log(clickObstructionInformations)
-
   document.getElementById("clicked-marker__content-type-js").innerHTML = type
   document.getElementById("obstruction-preview__date").innerHTML = splitDate[0]
 }
 
-const openObstructionPreviewContainer = () => {
-  // add informations to hmtl
-  changeHTML()
-
-  document.getElementById("obstruction-preview-container").style.display = "grid"
-  openObstructionPreviewContainerSwitch = true
-}
 
 document.addEventListener("DOMContentLoaded", function (event) {
   fetchMarker();
@@ -572,15 +574,35 @@ const makeGetRequest = async () => {
   }
 }
 
+// toggle obstruction preview container
+const toggleObstructionPreview = () => {
+    // add informations to hmtl
+    changeHTML()
+
+
+  const container = document.getElementById("obstruction-preview-container");
+
+  container.style.display = "grid"
+
+  
+ /*
+  if (container.style.height === "0px") {
+      container.style.height = "161px";
+      openObstructionPreviewContainerSwitch = true
+    } else {
+      // container.style.height = "161px";
+      console.log("hi")
+    }
+    */
+};
+
 const clickOnFeature = async (e) => {
   try {
     // e.target.feature.properties.id
     const response = await axios.get(`http://igf-srv-lehre.igf.uni-osnabrueck.de:41781/getObstructionById/${e.target.feature.properties.id}`)
 
     clickObstructionInformations = response.data.rows[0]
-
-    openObstructionPreviewContainer()
-
+    toggleObstructionPreview()
   } catch (error) {
     console.log(error)
   }
