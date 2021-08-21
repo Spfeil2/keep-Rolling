@@ -1,6 +1,8 @@
 // event listener on document
-// bool for basemap control
+// bool for basemap control and pick-locationc
 let basemapSwitch = true;
+let pickLocationSwitch = true;
+let coordinates;
 
 document.addEventListener("click", (e) => {
   const container = document.getElementById("basemap-container");
@@ -23,6 +25,33 @@ document.addEventListener("click", (e) => {
   } else if (e.target.classList.contains("basemap")) {
     container.style.height = "160px";
     basemapSwitch = true;
+  }
+});
+
+document.addEventListener("click", (e) => {
+  const container = document.getElementById("pick-location-container");
+  // detect click outside basemap container to close it
+  // check if anything without the class name "basemap" got clicked
+  if (
+    !e.target.classList.contains("pick-location") &&
+    container.style.height === "80px" &&
+    pickLocationSwitch != false
+  ) {
+    container.style.height = "80px";
+    pickLocationSwitch = false;
+  } else if (
+    !e.target.classList.contains("pick-location") &&
+    container.style.height === "80px" &&
+    pickLocationSwitch === false
+  ) {
+    if (!e.target.parentNode.classList.contains("pick-location")) {
+      container.style.height = "0px";
+      pickLocationSwitch = true;
+      openDeficiencyDrawer()
+    }
+  } else if (e.target.classList.contains("pick-location")) {
+    container.style.height = "80px";
+    pickLocationSwitch = true;
   }
 });
 
@@ -59,17 +88,6 @@ const closeFilter = () => {
 
   // hide filter
   document.getElementById("filter-container").style.width = "0";
-};
-
-// drawer
-const openDrawer = () => {
-  // show drawer content
-  setTimeout(() => {
-    document.getElementById("drawer__content").style.display = "block";
-  }, 300);
-
-  // show drawer
-  document.getElementById("drawer-container").style.width = "100%";
 };
 
 /* Set the width of the drawer to 0 */
@@ -115,7 +133,7 @@ const map = L.map("map", {
 
 // onclick events
 map.on("click", (e) => {
-  // console.log(e.latlng)
+  coordinates = e.latlng
 });
 
 L.control.scale().addTo(map);
@@ -134,7 +152,6 @@ const geolocate = () => {
 geolocate();
 
 // get lat long
-let coordinates;
 const onLocationFound = (e) => {
   coordinates = e.latlng;
 };
@@ -147,9 +164,21 @@ setInterval(() => {
 
 map.on("locationfound", onLocationFound);
 
+const openDeficiencyDrawer = () => {
+  // show drawer content
+  setTimeout(() => {
+    document.getElementById("drawer__content").style.display = "block";
+    // add location of deficienty to drawer html
+    document.getElementById("drawer__coordinates").innerHTML = `Your picked coordinates: ${coordinates}`
+  }, 300);
+
+  // show drawer
+  document.getElementById("drawer-container").style.width = "100%";
+}
+
 // submit form
 const form = document.getElementById("drawer__form");
-form.onsubmit = (e) => {
+form.onsubmit = async (e) => {
   // get input values
   const type = form.deficiency.value;
   const name = form.name.value;
@@ -170,16 +199,17 @@ form.onsubmit = (e) => {
     coordinates,
   };
 
+  e.preventDefault();
+
   console.log(data);
 
   try {
-    //const res = await axios.post("http://igf-srv-lehre.igf.uni-osnabrueck.de:41783/meldungen", data)
+    const res = await axios.post("http://igf-srv-lehre.igf.uni-osnabrueck.de:41781/postObstruction", data)
     //console.log(res)
+    console.log("hi")
   } catch (error) {
     console.log(error);
   }
-
-  e.preventDefault();
 };
 
 const lc = L.control
@@ -198,7 +228,6 @@ lc.start();
 document
   .getElementById("keep-rolling-new-deficiency")
   .addEventListener("click", () => {
-    console.log("test");
   });
 
 // show welcome screen on click on title
@@ -220,6 +249,18 @@ const toggleBasemaps = () => {
     basemapSwitch = true;
   } else {
     container.style.height = "160px";
+  }
+};
+
+// toggle basemap container
+const togglePickLocation = () => {
+  const container = document.getElementById("pick-location-container");
+
+  if (container.style.height === "80px") {
+    container.style.height = "0px";
+    pickLocationSwitch = true;
+  } else {
+    container.style.height = "80px";
   }
 };
 
@@ -277,8 +318,6 @@ const switchMode = () => {
     "drawer__input--textarea"
   )[0];
 
-  console.log(textArea);
-
   if (currentMode === "light") {
     // change mode
     document.documentElement.setAttribute("data-theme", "dark");
@@ -322,8 +361,6 @@ const submitSearch = (event) => {
     selectedTypes,
     date: [dateStart, dateEnd],
   };
-
-  console.log(searchData);
 };
 
 // change color and check selected types
@@ -344,8 +381,6 @@ const filterTypes = (event) => {
       e.style.backgroundColor = "#ff8906";
       e.style.boxShadow = "rgb(0 0 0 / 35%) 0px 5px 15px";
       e.style.border = "none";
-
-      console.log(e.style.backgroundColor);
 
       // add type to selectedTypes
       selectedTypes.push(e.getAttribute("value"));
@@ -427,18 +462,6 @@ document.getElementById("drawer__take-photo").addEventListener("click", () => {
   }
 });
 
-// get all items
-async function makeGetRequest() {
-  try {
-    const res = await axios.get(
-      "http://igf-srv-lehre.igf.uni-osnabrueck.de:41781/getAll"
-    );
-    return res.data;
-  } catch (e) {
-    console.error(e);
-  }
-}
-
 // icons for type
 const greenIcon = new L.Icon({
   iconUrl:
@@ -495,18 +518,111 @@ const violetIcon = new L.Icon({
   shadowSize: [41, 41],
 });
 
+
+document.addEventListener("DOMContentLoaded", function (event) {
+  fetchMarker();
+});
+
+
+
+// get all locations
+const makeGetRequest = async () => {
+  try {
+    const response = await axios.get(
+      "http://igf-srv-lehre.igf.uni-osnabrueck.de:41781/getAllObstructions"
+    );
+
+    return response.data.rows;
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+const clickOnFeature = async (e) => {
+  try {
+    // e.target.feature.properties.id
+    const response = await axios.get(`http://igf-srv-lehre.igf.uni-osnabrueck.de:41781/getObstructionById/${e.target.feature.properties.id}`)
+    console.log(response.data.rows[0])
+
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+function onEachFeature(feature, layer) {
+  //bind click
+  layer.on({
+      click: clickOnFeature
+  });
+}
+
 const fetchMarker = async () => {
   const data = await makeGetRequest();
-  const marker = data.results;
+
+  const geojson = {
+    type: "FeatureCollection",
+    features: []
+  }
 
   //Loop through the markers array
-  for (let i = 0; i < marker.length; i++) {
-    let lon = marker[i].longitude;
-    let lat = marker[i].latitude;
+  data.map((marker) => {
+    // create feature
+    const feature = {
+      type: "Feature",
+      properties: {
+        id: marker.id
+      },
+      geometry: {
+        type: "Point",
+        coordinates: [
+          marker.longitude,
+          marker.latitude
+        ]
+      }
+    }
+    
+    // push features to feature array
+    geojson.features.push(feature)
+  
+    /*
+
+    if (marker.type == "vegetation") {
+      marker_new = new L.Marker([marker.latitude, marker.longitude], { icon: greenIcon })
+        .addTo(map)
+        .on("mousedown", test_click(marker.id));
+    } 
+
+
+    else if (marker.type == "damage") {
+      marker_new = new L.Marker([marker.latitude, marker.longitude], { icon: redIcon })
+        .addTo(map)
+        .on("click", test_click);
+    } else if (marker.type == "object") {
+      marker_new = new L.Marker([marker.latitude, marker.longitude], { icon: violetIcon })
+        .addTo(map)
+        .on("click", test_click);
+    } else if (marker.type == "parking") {
+      marker_new = new L.Marker([marker.latitude, marker.longitude], { icon: greyIcon })
+        .addTo(map)
+        .on("click", test_click);
+    } else if (marker.type == "traffic_lights") {
+      marker_new = new L.Marker([marker.latitude, marker.longitude], { icon: yellowIcon })
+        .addTo(map)
+        .on("click", test_click);
+    }
+    */
+  })
+
+  L.geoJSON(geojson, {
+    onEachFeature: onEachFeature
+  }).addTo(map);
+
+
 
     //type specific icons
+    /*
     let marker_new;
-    if (marker[i].type == "vegetation") {
+    if (marker.type == "vegetation") {
       marker_new = new L.Marker([lat, lon], { icon: greenIcon })
         .addTo(map)
         .on("click", test_click);
@@ -527,26 +643,14 @@ const fetchMarker = async () => {
         .addTo(map)
         .on("click", test_click);
     }
+    */
   }
-};
-
-document.addEventListener("DOMContentLoaded", function (event) {
-  fetchMarker();
-  console.log("DOM fully loaded and parsed");
-});
-
-/*Buggy marker.. click klappt nicht immer gefühlt ist nur ein kleiner bereich der icons clickbar */
-const test_click = (e) => {
-  const container = document.getElementById("marker-container");
-  container.style.height = "160px";
-};
 
 let markerSwitch = true;
 document.addEventListener("click", (e) => {
   const container = document.getElementById("marker-container");
   // detect click outside basemap container to close it
   // check if anything without the class name "marker" got clicked
-  console.log(e.target);
   if (
     !e.target.classList.contains("marker") &&
     container.style.height === "160px" &&
