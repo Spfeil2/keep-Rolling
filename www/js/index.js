@@ -36,7 +36,7 @@ document.addEventListener("click", (e) => {
     openObstructionPreviewContainerSwitch = true
   } else if (container.style.height === "161px" && (!isChildElement || e.target.classList.contains("obstruction-preview-container")) && openObstructionPreviewContainerSwitch) {
     container.style.height = "0px"
-    openObstructionPreviewContainerSwitch = true
+    openObstructionPreviewContainerSwitch = false
   } else {
     container.style.height = "0px"
     openObstructionPreviewContainerSwitch = false
@@ -578,8 +578,6 @@ const makeGetRequest = async () => {
 const toggleObstructionPreview = () => {
   // add informations to hmtl
   changeHTML()
-
-  console.log(openObstructionPreviewContainerSwitch)
 
   const container = document.getElementById("obstruction-preview-container");
 
