@@ -373,18 +373,89 @@ const switchMode = () => {
 };
 
 let selectedTypes = [];
-const submitSearch = (event) => {
+const submitSearch = async (event) => {
   event.preventDefault();
 
   const days = event.target.days.value;
-  const dateStart = event.target.start.value;
-  const dateEnd = event.target.end.value;
+  let dateStart = event.target.start.value;
+  let dateEnd = event.target.end.value;
+  let emptyQuery = false;
+  let errorMessage;
 
-  const searchData = {
-    days,
-    selectedTypes,
-    date: [dateStart, dateEnd],
-  };
+  const isDateEmpty = dateStart === "" && dateEnd === "";
+  const isOneDaySpecified = (dateStart === "" && dateEnd !== "") || (dateStart !== "" && dateEnd === "") 
+  const noDays = days === "";
+
+  /*
+  * handle days and time range
+  */
+
+  // Fall 1 (Tage ja, range nein nein)
+  if (!noDays && isDateEmpty) {
+    console.log(1)
+  }
+
+  // Fall 3 
+  if (!noDays && !isDateEmpty) {
+    errorMessage = "Invalid request. Specify days OR select a time range."
+  }
+
+  // Fall a (nichts wird angegeben)
+  if (noDays && isDateEmpty) {
+    errorMessage = "Invalid request. Please provide days OR select a time range."
+  }
+
+  // Fall b (tage nein, range ja nein || nein ja)
+  if (noDays && isOneDaySpecified) {
+    errorMessage = "Invalid request. You likely forgot to specify the time range."
+  }
+
+  dateEnd = new Date(dateEnd);
+  dateStart = new Date(dateStart);
+
+  if (dateEnd < dateStart) {
+    errorMessage = "Invalid request. Start date must be before the end date."
+  }
+
+  /* 
+  * check valid input
+  */
+
+  if (days === "" && selectedTypes.length === 0 && isDateEmpty) {
+    emptyQuery = true
+  }
+
+
+  if (errorMessage !== undefined) {
+    document.getElementById("filter__content-error").style.display = "block"
+    document.getElementById("filter__content-error-message").innerHTML = errorMessage
+  } else {
+    document.getElementById("filter__content-error").style.display = "none"
+  }
+
+  try {
+    // valid query and no error message
+    if (!emptyQuery && errorMessage === undefined) {
+      const response = await axios.get("http://igf-srv-lehre.igf.uni-osnabrueck.de:41781/filterObstructions", {
+        params: {
+          days,
+          selectedTypes,
+          date: [dateStart, dateEnd]
+        }
+      })
+
+      console.log(response)
+
+      // wenn result ankommt, dann soll filter contaienr geschlossen werden, vorher dann spinner anzeigen
+      if (response) {
+        closeFilter()
+      }
+
+    }
+
+  } catch (error) {
+    console.log(error)
+  }
 };
 
 // change color and check selected types
@@ -720,3 +791,5 @@ document.addEventListener("click", (e) => {
     markerSwitch = true;
   }
 });
+
+

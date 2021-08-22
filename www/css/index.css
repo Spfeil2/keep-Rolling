@@ -733,6 +733,18 @@ body {
   height: 100%;
 }
 
+/*  Filter content */
+
+
+#filter__content-error {
+  background-color: #fff2f0;
+  border: 1px solid #ffccc7;
+  font-size: 14px;
+  padding: 8px 15px;
+  display: none;
+}
+
+
 
 
 @keyframes moveBike {

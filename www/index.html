@@ -233,8 +233,11 @@
     <form id="filter__content" onsubmit="submitSearch(event)">
       <h1 id="filter__title">Search for specific obstructions</h1>
 
+
       <h2 class="filter__labels">Specify days:</h2>
       <input type="number" id="filter__days-input" name="days" min="0" placeholder="e.g. 3" />
+
+      <h1>OR</h1>
 
       <h2 class="filter__labels">Select a time range:</h2>
       <span class="datepicker-toggle">
@@ -270,6 +273,16 @@
         <div class="filter__options" value="traffic_lights">
           Traffic light switching is unfavorable for cyclists at this point
         </div>
+      </div>
+
+      <div id="filter__content-error">
+        <svg id="filter__content-error-svg" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24"
+          width="24px" fill="red">
+          <path d="M0 0h24v24H0z" fill="none" />
+          <path
+            d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm5 13.59L15.59 17 12 13.41 8.41 17 7 15.59 10.59 12 7 8.41 8.41 7 12 10.59 15.59 7 17 8.41 13.41 12 17 15.59z" />
+        </svg>
+        <p id="filter__content-error-message"></p>
       </div>
 
       <input type="submit" value="Search" id="filter__submit-btn" />

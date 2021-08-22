@@ -31,6 +31,7 @@
     ]
   },
   "dependencies": {
+    "body-parser": "^1.19.0",
     "onsenui": "^2.11.2"
   }
 }
