@@ -5,6 +5,7 @@ let pickLocationSwitch = true;
 let coordinates;
 let openObstructionPreviewContainerSwitch = false;
 let clickObstructionInformations;
+let featureLayer;
 
 // close clicked-marker-container
 document.getElementById("clicked-marker-container-close").addEventListener("click", () => {
@@ -400,9 +401,9 @@ const submitSearch = async (event) => {
     errorMessage = "Invalid request. Specify days OR select a time range."
   }
 
-  // Fall a (nichts wird angegeben)
-  if (noDays && isDateEmpty) {
-    errorMessage = "Invalid request. Please provide days OR select a time range."
+  // Fall a (nur type wird angegeben)
+  if (noDays && isDateEmpty && selectedTypes.length !== 0) {
+    
   }
 
   // Fall b (tage nein, range ja nein || nein ja)
@@ -410,8 +411,10 @@ const submitSearch = async (event) => {
     errorMessage = "Invalid request. You likely forgot to specify the time range."
   }
 
-  dateEnd = new Date(dateEnd);
-  dateStart = new Date(dateStart);
+  if (!isDateEmpty) {
+    dateEnd = new Date(dateEnd);
+    dateStart = new Date(dateStart);
+  }
 
   if (dateEnd < dateStart) {
     errorMessage = "Invalid request. Start date must be before the end date."
@@ -436,15 +439,23 @@ const submitSearch = async (event) => {
   try {
     // valid query and no error message
     if (!emptyQuery && errorMessage === undefined) {
+      
       const response = await axios.get("http://igf-srv-lehre.igf.uni-osnabrueck.de:41781/filterObstructions", {
         params: {
           days,
           selectedTypes,
-          date: [dateStart, dateEnd]
+          dateStart, 
+          dateEnd
         }
       })
 
-      console.log(response)
+
+      // remove existing features from geojson
+      removeFeatures()
+      // add features returning from query to geojson
+      addFeatures(response.data.rows)
+
+
 
       // wenn result ankommt, dann soll filter contaienr geschlossen werden, vorher dann spinner anzeigen
       if (response) {
@@ -677,16 +688,24 @@ function onEachFeature(feature, layer) {
   });
 }
 
+
 const fetchMarker = async () => {
   const data = await makeGetRequest();
+  const geojson = createGeoJSON(data)
 
+  featureLayer = L.geoJSON(geojson, {
+    onEachFeature: onEachFeature
+  }).addTo(map);
+  }
+
+const createGeoJSON = (features) => {
   const geojson = {
     type: "FeatureCollection",
     features: []
   }
 
   //Loop through the markers array
-  data.map((marker) => {
+  features.map((marker) => {
     // create feature
     const feature = {
       type: "Feature",
@@ -704,70 +723,27 @@ const fetchMarker = async () => {
     
     // push features to feature array
     geojson.features.push(feature)
-  
-    /*
-
-    if (marker.type == "vegetation") {
-      marker_new = new L.Marker([marker.latitude, marker.longitude], { icon: greenIcon })
-        .addTo(map)
-        .on("mousedown", test_click(marker.id));
-    } 
-
-
-    else if (marker.type == "damage") {
-      marker_new = new L.Marker([marker.latitude, marker.longitude], { icon: redIcon })
-        .addTo(map)
-        .on("click", test_click);
-    } else if (marker.type == "object") {
-      marker_new = new L.Marker([marker.latitude, marker.longitude], { icon: violetIcon })
-        .addTo(map)
-        .on("click", test_click);
-    } else if (marker.type == "parking") {
-      marker_new = new L.Marker([marker.latitude, marker.longitude], { icon: greyIcon })
-        .addTo(map)
-        .on("click", test_click);
-    } else if (marker.type == "traffic_lights") {
-      marker_new = new L.Marker([marker.latitude, marker.longitude], { icon: yellowIcon })
-        .addTo(map)
-        .on("click", test_click);
-    }
-    */
   })
 
-  L.geoJSON(geojson, {
+  return geojson
+}
+
+const removeFeatures = () => {
+  featureLayer.clearLayers()
+}
+
+const addFeatures = (features) => {
+  removeFeatures()
+
+  const geojson = createGeoJSON(features)
+
+  featureLayer = L.geoJSON(geojson, {
     onEachFeature: onEachFeature
   }).addTo(map);
+}
 
+let markerSwitch = true
 
-
-    //type specific icons
-    /*
-    let marker_new;
-    if (marker.type == "vegetation") {
-      marker_new = new L.Marker([lat, lon], { icon: greenIcon })
-        .addTo(map)
-        .on("click", test_click);
-    } else if (marker[i].type == "damage") {
-      marker_new = new L.Marker([lat, lon], { icon: redIcon })
-        .addTo(map)
-        .on("click", test_click);
-    } else if (marker[i].type == "object") {
-      marker_new = new L.Marker([lat, lon], { icon: violetIcon })
-        .addTo(map)
-        .on("click", test_click);
-    } else if (marker[i].type == "parking") {
-      marker_new = new L.Marker([lat, lon], { icon: greyIcon })
-        .addTo(map)
-        .on("click", test_click);
-    } else if (marker[i].type == "traffic_lights") {
-      marker_new = new L.Marker([lat, lon], { icon: yellowIcon })
-        .addTo(map)
-        .on("click", test_click);
-    }
-    */
-  }
-
-let markerSwitch = true;
 document.addEventListener("click", (e) => {
   const container = document.getElementById("marker-container");
   // detect click outside basemap container to close it
@@ -791,5 +767,3 @@ document.addEventListener("click", (e) => {
     markerSwitch = true;
   }
 });
-
-
