@@ -1,6 +1,7 @@
 // event listener on document
 // bool for basemap control and pick-locationc
 let basemapSwitch = true;
+let legendSwitch = true;
 let pickLocationSwitch = true;
 let coordinates;
 let openObstructionPreviewContainerSwitch = false;
@@ -844,3 +845,29 @@ document.addEventListener("click", (e) => {
     markerSwitch = true;
   }
 });
+
+
+const toggleLegend = () => {
+  closeSettings()
+  const container = document.getElementById("legend-container");
+
+  if (container.style.height === "150px") {
+    container.style.height = "0px";
+    legendSwitch = true;
+  } else {
+    
+    /* setTimeout(() => {
+      document.getElementById("legend-container").style.display = "none";
+     }, 2000); */
+    
+     container.style.height = "150px";
+  }
+};
+
+
+/* Set the width of the settings to 0 */
+const closeLegend = () => {
+  // hide legend
+  document.getElementById("legend-container").style.height = "0";
+};
+
