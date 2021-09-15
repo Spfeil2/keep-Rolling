@@ -412,7 +412,6 @@ const switchMode = () => {
     // hide dark mode icon
     document.getElementById("dark-icon").style.display = "none";
     // show elements
-    document.getElementById("filter__content-error").style.display = "none";
     document.getElementById("light-icon").style.display = "block";
     // change text color
     document.getElementById("pick-location-container-text").style.color =
@@ -429,7 +428,6 @@ const switchMode = () => {
     // show elements
     document.getElementById("dark-icon").style.display = "block";
     // hide elements
-    document.getElementById("filter__content-error").style.display = "block";
     document.getElementById("light-icon").style.display = "none";
     // change text color
     document.getElementById("pick-location-container-text").style.color =
@@ -461,8 +459,12 @@ const submitSearch = async (event) => {
     (dateStart !== "" && dateEnd === "");
   const noDays = days === "";
 
+  console.log(isDateEmpty);
+  console.log(!isOneDaySpecified);
+  console.log(selectedTypes.length === 0);
+
   // invalid input: no options provided
-  if (isDateEmpty && !isOneDaySpecified && selectedTypes.length === 0) {
+  if (noDays && !isOneDaySpecified && selectedTypes.length === 0) {
     errorMessage = "Invalid request. Please provide filter arguments.";
   }
 
@@ -846,28 +848,24 @@ document.addEventListener("click", (e) => {
   }
 });
 
-
 const toggleLegend = () => {
-  closeSettings()
+  closeSettings();
   const container = document.getElementById("legend-container");
 
-  if (container.style.height === "150px") {
+  if (container.style.height === "300px") {
     container.style.height = "0px";
     legendSwitch = true;
   } else {
-    
     /* setTimeout(() => {
       document.getElementById("legend-container").style.display = "none";
      }, 2000); */
-    
-     container.style.height = "150px";
+
+    container.style.height = "300px";
   }
 };
-
 
 /* Set the width of the settings to 0 */
 const closeLegend = () => {
   // hide legend
   document.getElementById("legend-container").style.height = "0";
 };
-
