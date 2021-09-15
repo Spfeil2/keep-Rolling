@@ -264,14 +264,51 @@ form.onsubmit = async (e) => {
   console.log(data);
 
   try {
-    const res = await axios.post(
-      "http://igf-srv-lehre.igf.uni-osnabrueck.de:41781/postObstruction",
-      data
-    );
-    //console.log(res)
-    console.log("hi");
+    // invalid input
+    if (!name || !mail || !description) {
+      invalidInputErrorHandling();
+    } else {
+      const res = await axios.post(
+        "http://igf-srv-lehre.igf.uni-osnabrueck.de:41781/postObstruction",
+        data
+      );
+
+      closeDrawer();
+    }
   } catch (error) {
     console.log(error);
+  }
+};
+
+const invalidInputErrorHandling = () => {
+  document.getElementById("drawer__error-message").style.display = "block";
+  document.getElementById("drawer__error-message").innerHTML =
+    "Invalid request. Please provide all the necessary informations.";
+
+  // check which input value is invalid -> change border to red
+  const nameInput = document.getElementsByClassName("drawer__input")[0];
+  const emailInput = document.getElementsByClassName("drawer__input")[1];
+  const descriptionInput = document.getElementsByClassName(
+    "drawer__input--textarea"
+  )[0];
+
+  // check if empty string
+  if (nameInput.value === "") {
+    nameInput.style.border = "1px solid red";
+  } else {
+    nameInput.style.border = "1px solid #dee0e4";
+  }
+
+  if (emailInput.value === "") {
+    emailInput.style.border = "1px solid red";
+  } else {
+    emailInput.style.border = "1px solid #dee0e4";
+  }
+
+  if (descriptionInput.value === "") {
+    descriptionInput.style.border = "1px solid red";
+  } else {
+    descriptionInput.style.border = "1px solid #dee0e4";
   }
 };
 
@@ -373,31 +410,34 @@ const switchMode = () => {
     currentModeElement.innerHTML = "Light mode";
     // hide dark mode icon
     document.getElementById("dark-icon").style.display = "none";
-    // show light mode icon
+    // show elements
+    document.getElementById("filter__content-error").style.display = "none";
     document.getElementById("light-icon").style.display = "block";
     // change text color
     document.getElementById("pick-location-container-text").style.color =
       "white";
     document.getElementById("drawer__coordinates").style.color = "white";
-
-    // change border radius of textarea
+    // change border radius
     textArea.style.borderRadius = "5px";
+    document.getElementById("filter__days-input").style.borderRadius = "5px";
   } else {
     // change mode
     document.documentElement.setAttribute("data-theme", "light");
     // change text
     currentModeElement.innerHTML = "Dark mode";
-    // show dark mode icon
+    // show elements
     document.getElementById("dark-icon").style.display = "block";
-    // hide light mode icon
+    // hide elements
+    document.getElementById("filter__content-error").style.display = "block";
     document.getElementById("light-icon").style.display = "none";
     // change text color
     document.getElementById("pick-location-container-text").style.color =
       "black";
     document.getElementById("drawer__coordinates").style.color = "black";
 
-    // change border radius of textarea
+    // change border radius
     textArea.style.borderRadius = "0px";
+    document.getElementById("filter__days-input").style.borderRadius = "0px";
   }
 
   // toggle mode
@@ -419,6 +459,11 @@ const submitSearch = async (event) => {
     (dateStart === "" && dateEnd !== "") ||
     (dateStart !== "" && dateEnd === "");
   const noDays = days === "";
+
+  // invalid input: no options provided
+  if (isDateEmpty && !isOneDaySpecified && selectedTypes.length === 0) {
+    errorMessage = "Invalid request. Please provide filter arguments.";
+  }
 
   /*
    * handle days and time range
