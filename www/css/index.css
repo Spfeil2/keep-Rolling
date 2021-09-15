@@ -160,6 +160,13 @@ body {
     rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
 }
 
+#pick-location-container-text {
+  padding: 0.4em;
+  color: black;
+  font-size: 20px;
+  text-align: center;
+}
+
 .basemap__btns {
   max-height: 100%;
   width: 80%;
@@ -366,9 +373,12 @@ body {
   font-size: 1.4em;
   /*background-color: white;*/
   background-color: #faf6f6;
+  border: 1px solid #dee0e4;
 }
 
 .drawer__input--textarea {
+  color: black;
+  font-size: 1.4em;
   width: 100%;
   height: 80px;
   border: none;
@@ -376,7 +386,9 @@ body {
   margin-bottom: 1.5em;
   resize: none;
   padding: 0.4em;
-  background-color: white;
+  border-radius: 4px;
+  background-color: #faf6f6;
+  border: 1px solid #dee0e4;
 }
 
 .drawer__btns {
@@ -414,6 +426,10 @@ body {
   background-color: #ff8e3c;
   border: 1px solid #ff8e3c;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+#drawer__coordinates {
+  color: black;
 }
 
 #submit-btn {
@@ -521,9 +537,13 @@ body {
   display: none;
 }
 
+.leaflet-control-zoom {
+  top: 82vh !important;
+}
+
 .leaflet-control-zoom-in,
 .leaflet-control-zoom-out {
-  display: none !important;
+  color: red !important;
 }
 
 .leaflet-control-locate {
@@ -588,7 +608,7 @@ body {
 
 #clicked-marker-container-content {
   position: relative;
-  background-color: white;
+  background-color: black;
   width: 80%;
   height: 70%;
   overflow: scroll;
@@ -630,7 +650,7 @@ body {
   font-size: 1.2em;
   font-weight: 500;
   color: grey;
-  margin-top: .2em;
+  margin-top: 0.2em;
 }
 
 .clicked-marker__content-grid {
@@ -662,7 +682,6 @@ body {
     rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
   display: grid;
   grid-template-columns: 40% 60%;
-
 }
 
 .obstruction-preview__text-container {
@@ -673,7 +692,7 @@ body {
 .obstruction-preview__text-container h1 {
   font-size: 1.6em;
   margin-top: 1em;
-  margin-bottom: .2em;
+  margin-bottom: 0.2em;
 }
 
 .obstruction-preview__text-container p {
@@ -711,7 +730,7 @@ body {
 
 .obstruction-preview__btn {
   border: none;
-  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;  
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
   background-color: #ff8e3c;
   border-radius: 4px;
   width: 100px;
@@ -735,7 +754,6 @@ body {
 
 /*  Filter content */
 
-
 #filter__content-error {
   background-color: #fff2f0;
   border: 1px solid #ffccc7;
@@ -743,9 +761,6 @@ body {
   padding: 8px 15px;
   display: none;
 }
-
-
-
 
 @keyframes moveBike {
   from {

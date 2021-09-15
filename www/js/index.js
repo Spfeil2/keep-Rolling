@@ -8,39 +8,57 @@ let clickObstructionInformations;
 let featureLayer;
 
 // close clicked-marker-container
-document.getElementById("clicked-marker-container-close").addEventListener("click", () => {
-  document.getElementById("clicked-marker-container").style.display = "none"
-})
+document
+  .getElementById("clicked-marker-container-close")
+  .addEventListener("click", () => {
+    document.getElementById("clicked-marker-container").style.display = "none";
+  });
 
 // show clicked-marker-container
-document.querySelector(".obstruction-preview__btn").addEventListener("click", () => {
-  document.getElementById("clicked-marker-container").style.display = "flex"
+document
+  .querySelector(".obstruction-preview__btn")
+  .addEventListener("click", () => {
+    document.getElementById("clicked-marker-container").style.display = "flex";
 
-  // close preview container
-  document.getElementById("obstruction-preview-container").style.display = "none"
-})
+    // close preview container
+    document.getElementById("obstruction-preview-container").style.display =
+      "none";
+  });
 
-function hasParentWithMatchingSelector (target, selector) {
-  return [...document.querySelectorAll(selector)].some(el =>
-    el !== target && el.contains(target)
-  )
+function hasParentWithMatchingSelector(target, selector) {
+  return [...document.querySelectorAll(selector)].some(
+    (el) => el !== target && el.contains(target)
+  );
 }
 
 document.addEventListener("click", (e) => {
   const container = document.getElementById("obstruction-preview-container");
   // detect click outside basemap container to close it
   // check if anything without the class name "basemap" got clicked
-  const isChildElement = hasParentWithMatchingSelector(e.target, "#obstruction-preview-container")
+  const isChildElement = hasParentWithMatchingSelector(
+    e.target,
+    "#obstruction-preview-container"
+  );
 
-  if (container.style.height === "161px" && (isChildElement || e.target.classList.contains("obstruction-preview-container")) && openObstructionPreviewContainerSwitch) {
-    container.style.height = "161px"
-    openObstructionPreviewContainerSwitch = true
-  } else if (container.style.height === "161px" && (!isChildElement || e.target.classList.contains("obstruction-preview-container")) && openObstructionPreviewContainerSwitch) {
-    container.style.height = "0px"
-    openObstructionPreviewContainerSwitch = false
+  if (
+    container.style.height === "161px" &&
+    (isChildElement ||
+      e.target.classList.contains("obstruction-preview-container")) &&
+    openObstructionPreviewContainerSwitch
+  ) {
+    container.style.height = "161px";
+    openObstructionPreviewContainerSwitch = true;
+  } else if (
+    container.style.height === "161px" &&
+    (!isChildElement ||
+      e.target.classList.contains("obstruction-preview-container")) &&
+    openObstructionPreviewContainerSwitch
+  ) {
+    container.style.height = "0px";
+    openObstructionPreviewContainerSwitch = false;
   } else {
-    container.style.height = "0px"
-    openObstructionPreviewContainerSwitch = false
+    container.style.height = "0px";
+    openObstructionPreviewContainerSwitch = false;
   }
 });
 
@@ -87,7 +105,7 @@ document.addEventListener("click", (e) => {
     if (!e.target.parentNode.classList.contains("pick-location")) {
       container.style.height = "0px";
       pickLocationSwitch = true;
-      openDeficiencyDrawer()
+      openDeficiencyDrawer();
     }
   } else if (e.target.classList.contains("pick-location")) {
     container.style.height = "80px";
@@ -173,7 +191,7 @@ const map = L.map("map", {
 
 // onclick events
 map.on("click", (e) => {
-  coordinates = e.latlng
+  coordinates = e.latlng;
 });
 
 L.control.scale().addTo(map);
@@ -209,12 +227,14 @@ const openDeficiencyDrawer = () => {
   setTimeout(() => {
     document.getElementById("drawer__content").style.display = "block";
     // add location of deficienty to drawer html
-    document.getElementById("drawer__coordinates").innerHTML = `Your picked coordinates: ${coordinates}`
+    document.getElementById(
+      "drawer__coordinates"
+    ).innerHTML = `Your picked coordinates: ${coordinates}`;
   }, 300);
 
   // show drawer
   document.getElementById("drawer-container").style.width = "100%";
-}
+};
 
 // submit form
 const form = document.getElementById("drawer__form");
@@ -244,9 +264,12 @@ form.onsubmit = async (e) => {
   console.log(data);
 
   try {
-    const res = await axios.post("http://igf-srv-lehre.igf.uni-osnabrueck.de:41781/postObstruction", data)
+    const res = await axios.post(
+      "http://igf-srv-lehre.igf.uni-osnabrueck.de:41781/postObstruction",
+      data
+    );
     //console.log(res)
-    console.log("hi")
+    console.log("hi");
   } catch (error) {
     console.log(error);
   }
@@ -352,6 +375,10 @@ const switchMode = () => {
     document.getElementById("dark-icon").style.display = "none";
     // show light mode icon
     document.getElementById("light-icon").style.display = "block";
+    // change text color
+    document.getElementById("pick-location-container-text").style.color =
+      "white";
+    document.getElementById("drawer__coordinates").style.color = "white";
 
     // change border radius of textarea
     textArea.style.borderRadius = "5px";
@@ -364,6 +391,10 @@ const switchMode = () => {
     document.getElementById("dark-icon").style.display = "block";
     // hide light mode icon
     document.getElementById("light-icon").style.display = "none";
+    // change text color
+    document.getElementById("pick-location-container-text").style.color =
+      "black";
+    document.getElementById("drawer__coordinates").style.color = "black";
 
     // change border radius of textarea
     textArea.style.borderRadius = "0px";
@@ -384,31 +415,33 @@ const submitSearch = async (event) => {
   let errorMessage;
 
   const isDateEmpty = dateStart === "" && dateEnd === "";
-  const isOneDaySpecified = (dateStart === "" && dateEnd !== "") || (dateStart !== "" && dateEnd === "") 
+  const isOneDaySpecified =
+    (dateStart === "" && dateEnd !== "") ||
+    (dateStart !== "" && dateEnd === "");
   const noDays = days === "";
 
   /*
-  * handle days and time range
-  */
+   * handle days and time range
+   */
 
   // Fall 1 (Tage ja, range nein nein)
   if (!noDays && isDateEmpty) {
-    console.log(1)
+    console.log(1);
   }
 
-  // Fall 3 
+  // Fall 3
   if (!noDays && !isDateEmpty) {
-    errorMessage = "Invalid request. Specify days OR select a time range."
+    errorMessage = "Invalid request. Specify days OR select a time range.";
   }
 
   // Fall a (nur type wird angegeben)
   if (noDays && isDateEmpty && selectedTypes.length !== 0) {
-    
   }
 
   // Fall b (tage nein, range ja nein || nein ja)
   if (noDays && isOneDaySpecified) {
-    errorMessage = "Invalid request. You likely forgot to specify the time range."
+    errorMessage =
+      "Invalid request. You likely forgot to specify the time range.";
   }
 
   if (!isDateEmpty) {
@@ -417,55 +450,53 @@ const submitSearch = async (event) => {
   }
 
   if (dateEnd < dateStart) {
-    errorMessage = "Invalid request. Start date must be before the end date."
+    errorMessage = "Invalid request. Start date must be before the end date.";
   }
 
-  /* 
-  * check valid input
-  */
+  /*
+   * check valid input
+   */
 
   if (days === "" && selectedTypes.length === 0 && isDateEmpty) {
-    emptyQuery = true
+    emptyQuery = true;
   }
 
-
   if (errorMessage !== undefined) {
-    document.getElementById("filter__content-error").style.display = "block"
-    document.getElementById("filter__content-error-message").innerHTML = errorMessage
+    document.getElementById("filter__content-error").style.display = "block";
+    document.getElementById(
+      "filter__content-error-message"
+    ).innerHTML = errorMessage;
   } else {
-    document.getElementById("filter__content-error").style.display = "none"
+    document.getElementById("filter__content-error").style.display = "none";
   }
 
   try {
     // valid query and no error message
     if (!emptyQuery && errorMessage === undefined) {
-      
-      const response = await axios.get("http://igf-srv-lehre.igf.uni-osnabrueck.de:41781/filterObstructions", {
-        params: {
-          days,
-          selectedTypes,
-          dateStart, 
-          dateEnd
+      const response = await axios.get(
+        "http://igf-srv-lehre.igf.uni-osnabrueck.de:41781/filterObstructions",
+        {
+          params: {
+            days,
+            selectedTypes,
+            dateStart,
+            dateEnd,
+          },
         }
-      })
-
+      );
 
       // remove existing features from geojson
-      removeFeatures()
+      removeFeatures();
       // add features returning from query to geojson
-      addFeatures(response.data.rows)
-
-
+      addFeatures(response.data.rows);
 
       // wenn result ankommt, dann soll filter contaienr geschlossen werden, vorher dann spinner anzeigen
       if (response) {
-        closeFilter()
+        closeFilter();
       }
-
     }
-
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
 };
 
@@ -559,8 +590,12 @@ document.getElementById("drawer__take-photo").addEventListener("click", () => {
   });
 
   function onSuccess(imageData) {
-    var image = document.getElementById("myImage");
+    const image = document.getElementById("myImage");
     image.src = "data:image/jpeg;base64," + imageData;
+
+    console.log(image);
+
+    // todo: send string to server
   }
 
   function onFail(message) {
@@ -625,19 +660,18 @@ const violetIcon = new L.Icon({
 });
 
 const changeHTML = () => {
-  const splitDate = clickObstructionInformations.date.split("T")
+  const splitDate = clickObstructionInformations.date.split("T");
   let type;
 
   if (clickObstructionInformations.type == "object") {
-    type = "No informations"
+    type = "No informations";
   } else {
-    type = clickObstructionInformations.type
+    type = clickObstructionInformations.type;
   }
 
-  document.getElementById("clicked-marker__content-type-js").innerHTML = type
-  document.getElementById("obstruction-preview__date").innerHTML = splitDate[0]
-}
-
+  document.getElementById("clicked-marker__content-type-js").innerHTML = type;
+  document.getElementById("obstruction-preview__date").innerHTML = splitDate[0];
+};
 
 document.addEventListener("DOMContentLoaded", function (event) {
   fetchMarker();
@@ -654,55 +688,56 @@ const makeGetRequest = async () => {
   } catch (e) {
     console.error(e);
   }
-}
+};
 
 // toggle obstruction preview container
 const toggleObstructionPreview = () => {
   // add informations to hmtl
-  changeHTML()
+  changeHTML();
 
   const container = document.getElementById("obstruction-preview-container");
 
-  container.style.display = "grid"
+  container.style.display = "grid";
 
   container.style.height = "161px";
-  openObstructionPreviewContainerSwitch = true
+  openObstructionPreviewContainerSwitch = true;
 };
 
 const clickOnFeature = async (e) => {
   try {
     // e.target.feature.properties.id
-    const response = await axios.get(`http://igf-srv-lehre.igf.uni-osnabrueck.de:41781/getObstructionById/${e.target.feature.properties.id}`)
+    const response = await axios.get(
+      `http://igf-srv-lehre.igf.uni-osnabrueck.de:41781/getObstructionById/${e.target.feature.properties.id}`
+    );
 
-    clickObstructionInformations = response.data.rows[0]
-    toggleObstructionPreview()
+    clickObstructionInformations = response.data.rows[0];
+    toggleObstructionPreview();
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
-}
+};
 
 function onEachFeature(feature, layer) {
   //bind click
   layer.on({
-      click: clickOnFeature
+    click: clickOnFeature,
   });
 }
 
-
 const fetchMarker = async () => {
   const data = await makeGetRequest();
-  const geojson = createGeoJSON(data)
+  const geojson = createGeoJSON(data);
 
   featureLayer = L.geoJSON(geojson, {
-    onEachFeature: onEachFeature
+    onEachFeature: onEachFeature,
   }).addTo(map);
-  }
+};
 
 const createGeoJSON = (features) => {
   const geojson = {
     type: "FeatureCollection",
-    features: []
-  }
+    features: [],
+  };
 
   //Loop through the markers array
   features.map((marker) => {
@@ -710,39 +745,36 @@ const createGeoJSON = (features) => {
     const feature = {
       type: "Feature",
       properties: {
-        id: marker.id
+        id: marker.id,
       },
       geometry: {
         type: "Point",
-        coordinates: [
-          marker.longitude,
-          marker.latitude
-        ]
-      }
-    }
-    
-    // push features to feature array
-    geojson.features.push(feature)
-  })
+        coordinates: [marker.longitude, marker.latitude],
+      },
+    };
 
-  return geojson
-}
+    // push features to feature array
+    geojson.features.push(feature);
+  });
+
+  return geojson;
+};
 
 const removeFeatures = () => {
-  featureLayer.clearLayers()
-}
+  featureLayer.clearLayers();
+};
 
 const addFeatures = (features) => {
-  removeFeatures()
+  removeFeatures();
 
-  const geojson = createGeoJSON(features)
+  const geojson = createGeoJSON(features);
 
   featureLayer = L.geoJSON(geojson, {
-    onEachFeature: onEachFeature
+    onEachFeature: onEachFeature,
   }).addTo(map);
-}
+};
 
-let markerSwitch = true
+let markerSwitch = true;
 
 document.addEventListener("click", (e) => {
   const container = document.getElementById("marker-container");
