@@ -569,7 +569,7 @@ body {
 
 .leaflet-control-zoom-in,
 .leaflet-control-zoom-out {
-  color: red !important;
+  color: #ff8906 !important;
 }
 
 .leaflet-control-locate {
