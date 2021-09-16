@@ -457,12 +457,13 @@ const submitSearch = async (event) => {
     (dateStart !== "" && dateEnd === "");
   const noDays = days === "";
 
-  console.log(noDays);
-  console.log(!isOneDaySpecified);
-  console.log(selectedTypes.length === 0);
-
   // invalid input: no options provided
-  if (noDays && !isOneDaySpecified && selectedTypes.length === 0) {
+  if (
+    noDays &&
+    dateStart === "" &&
+    dateEnd === "" &&
+    selectedTypes.length === 0
+  ) {
     errorMessage = "Invalid request. Please provide filter arguments.";
   }
 
