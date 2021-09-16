@@ -552,6 +552,7 @@ const filterTypes = (event) => {
   const e = event.target;
 
   if (e.classList.value == "filter__options") {
+    console.log(currentMode);
     if (e.style.backgroundColor === "rgb(255, 137, 6)") {
       e.style.backgroundColor = "white";
       e.style.boxShadow = "none";
@@ -562,9 +563,9 @@ const filterTypes = (event) => {
         (type) => type !== e.getAttribute("value")
       );
     } else {
-      e.style.backgroundColor = "#ff8906";
-      e.style.boxShadow = "rgb(0 0 0 / 35%) 0px 5px 15px";
-      e.style.border = "none";
+      e.style.backgroundColor = "red";
+      e.style.boxShadow = "none";
+      e.style.border = "1px solid #dee0e4";
 
       // add type to selectedTypes
       selectedTypes.push(e.getAttribute("value"));
