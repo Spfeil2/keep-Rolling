@@ -551,8 +551,17 @@ const submitSearch = async (event) => {
 const filterTypes = (event) => {
   const e = event.target;
 
+  console.log(event.target.style.backgroundColor);
+  console.log(currentMode);
+
+  if (currentMode === "dark") {
+    console.log(1);
+  } else {
+    console.log(2);
+  }
+
+  /*
   if (e.classList.value == "filter__options") {
-    console.log(currentMode);
     if (e.style.backgroundColor === "rgb(255, 137, 6)") {
       e.style.backgroundColor = "white";
       e.style.boxShadow = "none";
@@ -571,6 +580,7 @@ const filterTypes = (event) => {
       selectedTypes.push(e.getAttribute("value"));
     }
   }
+  */
 };
 
 const stopGeolocation = () => {
