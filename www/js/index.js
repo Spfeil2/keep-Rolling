@@ -803,7 +803,7 @@ function onEachFeature(feature, layer) {
 }
 
 // add custom icon depending on property type
-function customIcons(feature, latlng) {
+function createCustomIcons(feature, latlng) {
   const newIcon = { 
     iconUrl: "",
     shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
@@ -837,7 +837,7 @@ const fetchMarker = async () => {
   const geojson = createGeoJSON(data);
 
   featureLayer = L.geoJSON(geojson, {
-    pointToLayer: customIcons,
+    pointToLayer: createCustomIcons,
     onEachFeature: onEachFeature,
   }).addTo(map);
 };
@@ -878,8 +878,10 @@ const addFeatures = (features) => {
   removeFeatures();
 
   const geojson = createGeoJSON(features);
+  console.log(features)
 
   featureLayer = L.geoJSON(geojson, {
+    pointToLayer: createCustomIcons,
     onEachFeature: onEachFeature,
   }).addTo(map);
 };

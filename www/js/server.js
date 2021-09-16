@@ -79,7 +79,7 @@ app.get('/filterObstructions', async (req, res) => {
   try {	 
     if (providedDays && !providedTypes && !providedTimestamp) {
       
-      sql_result = await client.query(`SELECT latitude, longitude, id FROM meldungen WHERE date BETWEEN CURRENT_DATE - ${req.query.days} and CURRENT_DATE`)
+      sql_result = await client.query(`SELECT latitude, longitude, id, type FROM meldungen WHERE date BETWEEN CURRENT_DATE - ${req.query.days} and CURRENT_DATE`)
 
     } else if (providedDays && providedTypes && !providedTimestamp) {
       const offset = 1;
@@ -88,7 +88,7 @@ app.get('/filterObstructions', async (req, res) => {
        }).join(',');
 
 	
-      sql_result = await client.query("SELECT latitude, longitude, id FROM meldungen WHERE (date BETWEEN CURRENT_DATE - " + req.query.days + " and CURRENT_DATE) and type IN ("+placeholders+")", selectedTypes)
+      sql_result = await client.query("SELECT latitude, longitude, id, type FROM meldungen WHERE (date BETWEEN CURRENT_DATE - " + req.query.days + " and CURRENT_DATE) and type IN ("+placeholders+")", selectedTypes)
 
     } else if (!providedDays && providedTypes && !providedTimestamp) {
 
@@ -97,12 +97,12 @@ app.get('/filterObstructions', async (req, res) => {
             return '$'+(i+offset); 
       }).join(',');
 
-       sql_result = await client.query("SELECT latitude, longitude, id FROM meldungen WHERE type IN ("+placeholders+")", selectedTypes);
+       sql_result = await client.query("SELECT latitude, longitude, id, type FROM meldungen WHERE type IN ("+placeholders+")", selectedTypes);
 
     } else if (!providedDays && !providedTypes && providedTimestamp) {
        console.log(1)
 
-      sql_result = await client.query(`SELECT latitude, longitude, id FROM meldungen WHERE date >= TO_DATE('${start}', 'YYYYMMDD') AND date < TO_DATE('${end + 1}', 'YYYYMMDD')`)
+      sql_result = await client.query(`SELECT latitude, longitude, id, type FROM meldungen WHERE date >= TO_DATE('${start}', 'YYYYMMDD') AND date < TO_DATE('${end + 1}', 'YYYYMMDD')`)
 
     } else if (!providedDays && providedTypes && providedTimestamp) {
        console.log(5)
@@ -112,7 +112,7 @@ app.get('/filterObstructions', async (req, res) => {
             return '$'+(i+offset); 
       }).join(',');
 
-      sql_result = await client.query("SELECT latitude, longitude, id FROM meldungen WHERE (date >= TO_DATE('" + start + "', 'YYYYMMDD') AND date < TO_DATE('" + end + 1 + "', 'YYYYMMDD')) and type IN ("+placeholders+")", selectedTypes)
+      sql_result = await client.query("SELECT latitude, longitude, id, type FROM meldungen WHERE (date >= TO_DATE('" + start + "', 'YYYYMMDD') AND date < TO_DATE('" + end + 1 + "', 'YYYYMMDD')) and type IN ("+placeholders+")", selectedTypes)
     }
   
   console.log(sql_result.rows)
@@ -134,7 +134,7 @@ app.get('/getAllObstructions', async (req, res) => {
     res.status(400).send({results:e})
   }
 })
-
+/* 
 app.get('/filterType', async (req, res) => {
   try{
       const sql_result = await client.query("SELECT * FROM meldungen WHERE type='vegetation'")
@@ -170,7 +170,7 @@ app.get('/updateBehoben', async (req, res) => {
   } catch (e) {
       console.log(e)
   }
-})
+}) */
 
 app.delete('/delete/:id', async (req, res) => {
   const id = parseInt(req.params.id)
