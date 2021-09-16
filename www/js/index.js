@@ -829,23 +829,23 @@ function createCustomIcons(feature, latlng) {
   switch (feature.properties["type"]) {
     case "parking":
       newIcon.iconUrl =
-        "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png";
+        "/www/img/red_marker.jpg";
       return L.marker(latlng, { icon: new L.icon(newIcon) });
     case "damage":
       newIcon.iconUrl =
-        "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-violet.png";
+        "/www/img/violet_marker.jpg";
       return L.marker(latlng, { icon: new L.icon(newIcon) });
     case "vegetation":
       newIcon.iconUrl =
-        "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png";
+        "/www/img/green_marker.jpg";
       return L.marker(latlng, { icon: new L.icon(newIcon) });
     case "object":
       newIcon.iconUrl =
-        "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-yellow.png";
+        "/www/img/yellow_marker.jpg";
       return L.marker(latlng, { icon: new L.icon(newIcon) });
     case "traffic_lights":
       newIcon.iconUrl =
-        "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-grey.png";
+        "/www/img/grey_marker.jpg";
       return L.marker(latlng, { icon: new L.icon(newIcon) });
   }
 }
