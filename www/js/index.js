@@ -716,7 +716,7 @@ const changeHTML = () => {
   } else {
     type = clickObstructionInformations.type;
   }
-
+  
   document.getElementById("clicked-marker__content-type-js").innerHTML = type;
   document.getElementById("obstruction-preview__date").innerHTML = splitDate[0];
 };

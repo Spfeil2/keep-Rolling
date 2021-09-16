@@ -729,7 +729,7 @@ body {
   font-size: 1.2em;
   margin: 0 0 2em 0;
   font-weight: 500;
-  color: grey;
+  color: black;
 }
 
 .obstruction-preview__svg-container {
@@ -745,7 +745,7 @@ body {
 .obstruction-preview__date {
   vertical-align: middle;
   display: inline-block;
-  color: grey;
+  color: black;
   font-size: 14px;
 }
 
@@ -768,6 +768,7 @@ body {
   display: inline;
   font-size: 14px;
   float: right;
+  color: black;
 }
 
 .obstruction-preview__image-container {
