@@ -114,7 +114,7 @@ document.addEventListener("click", (e) => {
   }
 });
 
-// Wait for the deviceready event before using any of Cordova's device APIs.
+/* // Wait for the deviceready event before using any of Cordova's device APIs.
 document.addEventListener("deviceready", onDeviceReady, false);
 
 function onDeviceReady() {
@@ -122,7 +122,7 @@ function onDeviceReady() {
 
   console.log("Running cordova-" + cordova.platformId + "@" + cordova.version);
   document.getElementById("deviceready").classList.add("ready");
-}
+} */
 
 // stop showing welcome screen after 4 seconds
 setTimeout(() => {
