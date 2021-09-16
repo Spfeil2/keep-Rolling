@@ -802,11 +802,42 @@ function onEachFeature(feature, layer) {
   });
 }
 
+// add custom icon depending on property type
+function customIcons(feature, latlng) {
+  const newIcon = { 
+    iconUrl: "",
+    shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41] 
+  }
+
+  switch(feature.properties["type"]) {
+      case "parking":
+        newIcon.iconUrl = "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png"
+        return L.marker(latlng, {icon: new L.icon(newIcon)})
+      case "damage":
+        newIcon.iconUrl = "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-violet.png"
+        return L.marker(latlng, {icon: new L.icon(newIcon)})
+      case "vegetation":
+        newIcon.iconUrl = "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png"
+        return L.marker(latlng, {icon: new L.icon(newIcon)})
+      case "object":
+        newIcon.iconUrl = "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-yellow.png"
+        return L.marker(latlng, {icon: new L.icon(newIcon)})
+      case "traffic_lights":
+        newIcon.iconUrl = "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-grey.png"
+        return L.marker(latlng, {icon: new L.icon(newIcon)})
+  }  
+};
+
 const fetchMarker = async () => {
   const data = await makeGetRequest();
   const geojson = createGeoJSON(data);
 
   featureLayer = L.geoJSON(geojson, {
+    pointToLayer: customIcons,
     onEachFeature: onEachFeature,
   }).addTo(map);
 };
@@ -824,6 +855,7 @@ const createGeoJSON = (features) => {
       type: "Feature",
       properties: {
         id: marker.id,
+        type: marker.type
       },
       geometry: {
         type: "Point",
