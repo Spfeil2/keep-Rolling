@@ -551,8 +551,8 @@ const submitSearch = async (event) => {
 const filterTypes = (event) => {
   const e = event.target;
 
-  console.log(event.target.style.backgroundColor);
-  console.log(currentMode);
+  console.log(e.style.backgroundColor);
+  console.log(e);
 
   if (currentMode === "dark") {
     console.log(1);
