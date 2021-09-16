@@ -262,8 +262,6 @@ form.onsubmit = async (e) => {
 
   e.preventDefault();
 
-  console.log(data);
-
   try {
     // invalid input
     if (!name || !mail || !description) {
@@ -707,24 +705,6 @@ const violetIcon = new L.Icon({
   shadowSize: [41, 41],
 });
 
-const changeHTML = () => {
-  const splitDate = clickObstructionInformations.date.split("T");
-  let type;
-
-  if (clickObstructionInformations.type == "object") {
-    type = "No informations";
-  } else {
-    type = clickObstructionInformations.type;
-  }
-  
-  document.getElementById("clicked-marker__content-type-js").innerHTML = type;
-  document.getElementById("obstruction-preview__date").innerHTML = splitDate[0];
-};
-
-document.addEventListener("DOMContentLoaded", function (event) {
-  fetchMarker();
-});
-
 // get all locations
 const makeGetRequest = async () => {
   try {
@@ -738,10 +718,60 @@ const makeGetRequest = async () => {
   }
 };
 
+const changeHTML = (data) => {
+  console.log(data);
+  let type;
+  let isFixed;
+
+  if (data.type == "object") {
+    type = "No informations";
+  } else {
+    type = data.type;
+  }
+
+  if (data.behoben === null) {
+    isFixed = "Not fixed";
+  } else {
+    isFixed = "Fixed";
+  }
+
+  let date = new Date(data.date);
+  date = date.toLocaleDateString("de");
+
+  document.getElementById(
+    "clicked-marker__content-type-preview"
+  ).innerHTML = type;
+  document.getElementById("clicked-marker__content-type").innerHTML = type;
+  document.getElementById("obstruction-preview__date").innerHTML = date;
+  document.getElementsByClassName(
+    "obstruction-showmore__date"
+  )[0].innerHTML = date;
+  document.getElementById("clicked-marker__content-description").innerHTML =
+    data.description;
+  document.getElementById("clicked-marker__content-reportedBy").innerHTML =
+    data.name;
+  document.getElementById("obstruction-status").innerHTML = isFixed;
+
+  behoben: null;
+  date: "2021-09-14T22:00:00.000Z";
+  description: "asasasdasasdasd";
+  id: 355;
+  latitude: 52.2921;
+  longitude: 8.09418;
+  mail: "dummy@gmail.com";
+  name: "dummy";
+  photo: null;
+  type: "object";
+};
+
+document.addEventListener("DOMContentLoaded", function (event) {
+  fetchMarker();
+});
+
 // toggle obstruction preview container
-const toggleObstructionPreview = () => {
+const toggleObstructionPreview = (featureData) => {
   // add informations to hmtl
-  changeHTML();
+  changeHTML(featureData);
 
   const container = document.getElementById("obstruction-preview-container");
 
@@ -759,7 +789,7 @@ const clickOnFeature = async (e) => {
     );
 
     clickObstructionInformations = response.data.rows[0];
-    toggleObstructionPreview();
+    toggleObstructionPreview(clickObstructionInformations);
   } catch (error) {
     console.log(error);
   }
