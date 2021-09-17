@@ -644,12 +644,13 @@ map.on("dragend", function (e) {
 document.getElementById("drawer__take-photo").addEventListener("click", () => {
   navigator.camera.getPicture(onSuccess, onFail, {
     quality: 25,
-    destinationType: Camera.DestinationType.FILE_URI,
+    destinationType: Camera.DestinationType.DATA_URL,
+
   });
 
   function onSuccess(imageData) {
-    const image = document.getElementById("myImage");
-    image.src = "data:image/jpeg;base64," + imageData;
+    console.log(imageData)
+    const image = "data:image/jpeg;base64," + imageData;
 
     console.log(image);
 
