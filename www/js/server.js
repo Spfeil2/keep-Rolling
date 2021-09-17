@@ -14,10 +14,10 @@ app.use((req, res, next) => {
     "Origin, X-Requested-With, Content-Type, Accept"
   );
   res.setHeader("Access-Control-Allow-Methods", "GET, POST", "DELETE");
-  
+
   res.setHeader("Access-Control-Allow-Credentials", false);
   next();
-}); 
+});
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -43,12 +43,20 @@ client.connect((err) => {
 // post request insert new meldungen
 app.post("/postObstruction", async (req, res) => {
   try {
-    const { name, mail, description, type, date, coordinates } = req.body;
+    const {
+      name,
+      mail,
+      description,
+      type,
+      date,
+      coordinates,
+      image,
+    } = req.body;
 
     const latitude = coordinates.lat;
     const longitude = coordinates.lng;
 
-    const sql_insert = `INSERT INTO meldungen (name, date, mail, description, type, latitude, longitude) VALUES('${name}', '${date}', '${mail}', '${description}', '${type}', '${latitude}', '${longitude}')`;
+    const sql_insert = `INSERT INTO meldungen (name, date, mail, description, type, latitude, longitude, image) VALUES('${name}', '${date}', '${mail}', '${description}', '${type}', '${latitude}', '${longitude}', '${image}')`;
     const response = await client.query(sql_insert);
     console.log(response);
 

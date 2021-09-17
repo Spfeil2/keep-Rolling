@@ -7,6 +7,7 @@ let coordinates;
 let openObstructionPreviewContainerSwitch = false;
 let clickObstructionInformations;
 let featureLayer;
+let image;
 
 // Wait for the deviceready event before using any of Cordova's device APIs.
 document.addEventListener("deviceready", onDeviceReady, false);
@@ -258,6 +259,7 @@ form.onsubmit = async (e) => {
     description,
     date,
     coordinates,
+    image,
   };
 
   e.preventDefault();
@@ -645,23 +647,19 @@ document.getElementById("drawer__take-photo").addEventListener("click", () => {
   navigator.camera.getPicture(onSuccess, onFail, {
     quality: 25,
     destinationType: Camera.DestinationType.DATA_URL,
-
   });
 
   function onSuccess(imageData) {
-    console.log(imageData)
-    const image = "data:image/jpeg;base64," + imageData;
+    const img = "data:image/jpeg;base64," + imageData;
 
-    console.log(image);
-
-    // todo: send string to server
+    // overwrite global image variable for submit
+    image = img;
   }
 
   function onFail(message) {
     alert("Failed because: " + message);
   }
 });
-
 
 // get all locations
 const makeGetRequest = async () => {
@@ -695,6 +693,8 @@ const changeHTML = (data) => {
 
   let date = new Date(data.date);
   date = date.toLocaleDateString("de");
+
+  console.log(data.image);
 
   document.getElementById(
     "clicked-marker__content-type-preview"
@@ -765,9 +765,9 @@ function createCustomIcons(feature, latlng) {
 
   // check running platform to adjust path to imgs
   if (window.cordova.platformId === "browser") {
-    pathBeginning = "/www/img"
+    pathBeginning = "/www/img";
   } else {
-    pathBeginning = "/android_asset/www/img"
+    pathBeginning = "/android_asset/www/img";
   }
 
   switch (feature.properties["type"]) {
