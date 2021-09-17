@@ -678,6 +678,7 @@ const changeHTML = (data) => {
   console.log(data);
   let type;
   let isFixed;
+  let detailImage
 
   if (data.type == "object") {
     type = "No informations";
@@ -694,8 +695,15 @@ const changeHTML = (data) => {
   let date = new Date(data.date);
   date = date.toLocaleDateString("de");
 
-  console.log(data.image);
-  document.getElementById("obstruction-preview__image").src = data.image;
+  if (data.photo === undefined) {
+    detailImage = "https://www.koeln.de/files/koeln/locations/koelner-dom_hl_0514_565x270.jpg"
+  } else {
+    detailImage = data.photo
+  }
+
+  console.log(data.photo);
+  console.log(detailImage);
+  document.getElementsByClassName("obstruction-preview__image").src = detailImage;
 
   document.getElementById(
     "clicked-marker__content-type-preview"

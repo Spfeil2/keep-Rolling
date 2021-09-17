@@ -5,7 +5,6 @@ var bodyParser = require("body-parser");
 const { Client } = require("pg");
 const app = express();
 
-app.use(express.json());
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -14,14 +13,13 @@ app.use((req, res, next) => {
     "Origin, X-Requested-With, Content-Type, Accept"
   );
   res.setHeader("Access-Control-Allow-Methods", "GET, POST", "DELETE");
-
+  
   res.setHeader("Access-Control-Allow-Credentials", false);
   next();
-});
+}); 
 
-// parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+// increase payload limit
+app.use(express.json({limit: '10mb'}));
 
 const client = new Client({
   host: "127.0.0.1",
@@ -43,20 +41,12 @@ client.connect((err) => {
 // post request insert new meldungen
 app.post("/postObstruction", async (req, res) => {
   try {
-    const {
-      name,
-      mail,
-      description,
-      type,
-      date,
-      coordinates,
-      image,
-    } = req.body;
+    const { name, mail, description, type, date, coordinates, image } = req.body;
 
     const latitude = coordinates.lat;
     const longitude = coordinates.lng;
 
-    const sql_insert = `INSERT INTO meldungen (name, date, mail, description, type, latitude, longitude, image) VALUES('${name}', '${date}', '${mail}', '${description}', '${type}', '${latitude}', '${longitude}', '${image}')`;
+    const sql_insert = `INSERT INTO meldungen (name, date, mail, description, type, latitude, longitude, photo) VALUES('${name}', '${date}', '${mail}', '${description}', '${type}', '${latitude}', '${longitude}', '${image}')`;
     const response = await client.query(sql_insert);
     console.log(response);
 
