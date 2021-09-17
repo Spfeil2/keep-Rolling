@@ -661,61 +661,6 @@ document.getElementById("drawer__take-photo").addEventListener("click", () => {
   }
 });
 
-// icons for type
-const greenIcon = new L.Icon({
-  iconUrl:
-    "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png",
-  shadowUrl:
-    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41],
-});
-
-const redIcon = new L.Icon({
-  iconUrl:
-    "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png",
-  shadowUrl:
-    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41],
-});
-
-const greyIcon = new L.Icon({
-  iconUrl:
-    "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-grey.png",
-  shadowUrl:
-    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41],
-});
-
-const yellowIcon = new L.Icon({
-  iconUrl:
-    "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-yellow.png",
-  shadowUrl:
-    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41],
-});
-
-const violetIcon = new L.Icon({
-  iconUrl:
-    "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-violet.png",
-  shadowUrl:
-    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41],
-});
 
 // get all locations
 const makeGetRequest = async () => {
@@ -815,21 +760,30 @@ function createCustomIcons(feature, latlng) {
     shadowSize: [41, 41],
   };
 
+  let pathBeginning;
+
+  // check running platform to adjust path to imgs
+  if (window.cordova.platformId === "browser") {
+    pathBeginning = "/www/img"
+  } else {
+    pathBeginning = "/android_asset/www/img"
+  }
+
   switch (feature.properties["type"]) {
     case "parking":
-      newIcon.iconUrl = "/www/img/red_marker.jpg";
+      newIcon.iconUrl = `${pathBeginning}/red_marker.jpg`;
       return L.marker(latlng, { icon: new L.icon(newIcon) });
     case "damage":
-      newIcon.iconUrl = "/www/img/violet_marker.jpg";
+      newIcon.iconUrl = `${pathBeginning}/violet_marker.jpg`;
       return L.marker(latlng, { icon: new L.icon(newIcon) });
     case "vegetation":
-      newIcon.iconUrl = "/www/img/green_marker.jpg";
+      newIcon.iconUrl = `${pathBeginning}/green_marker.jpg`;
       return L.marker(latlng, { icon: new L.icon(newIcon) });
     case "object":
-      newIcon.iconUrl = "/www/img/yellow_marker.jpg";
+      newIcon.iconUrl = `${pathBeginning}/yellow_marker.jpg`;
       return L.marker(latlng, { icon: new L.icon(newIcon) });
     case "traffic_lights":
-      newIcon.iconUrl = "/www/img/grey_marker.jpg";
+      newIcon.iconUrl = `${pathBeginning}/grey_marker.jpg`;
       return L.marker(latlng, { icon: new L.icon(newIcon) });
   }
 }
