@@ -284,15 +284,16 @@ form.onsubmit = async (e) => {
 
 // add new feature to existing map
 const addNewFeature = (data) => {
+  console.log(data.coordinates.lng)
   const feature = {
     type: "Feature",
     properties: {
-      id: data.id,
+      id: 10,
       type: data.type,
     },
     geometry: {
       type: "Point",
-      coordinates: [data.longitude, data.latitude],
+      coordinates: [data.coordinates.lng, data.coordinates.lat],
     },
   };
 
@@ -302,12 +303,14 @@ const addNewFeature = (data) => {
   };
 
   geojson.features.push(feature);
+  
+  featureLayer.addData(feature);
 
-  L.geoJSON(geojson, {
-    pointToLayer: createCustomIcons,
-    onEachFeature,
-  }).addTo(map);
-};
+  //const test = L.geoJSON(geojson, {
+    //pointToLayer: createCustomIcons,
+    //onEachFeature,
+  //}).addTo(map);
+  };
 
 const invalidInputErrorHandling = () => {
   document.getElementById("drawer__error-message").style.display = "block";
