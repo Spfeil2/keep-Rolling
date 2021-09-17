@@ -303,7 +303,10 @@ const addNewFeature = (data) => {
 
   geojson.features.push(feature);
 
-  L.geojson(geojson).addTo(map);
+  L.geoJSON(geojson, {
+    pointToLayer: createCustomIcons,
+    onEachFeature,
+  }).addTo(map);
 };
 
 const invalidInputErrorHandling = () => {
@@ -832,7 +835,7 @@ const fetchMarker = async () => {
 
   featureLayer = L.geoJSON(geojson, {
     pointToLayer: createCustomIcons,
-    onEachFeature: onEachFeature,
+    onEachFeature,
   }).addTo(map);
 };
 
