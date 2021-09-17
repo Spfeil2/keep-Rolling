@@ -284,7 +284,25 @@ form.onsubmit = async (e) => {
 
 // add new feature to existing map
 const addNewFeature = (data) => {
-  const geojson = createGeoJSON(data);
+  const feature = {
+    type: "Feature",
+    properties: {
+      id: data.id,
+      type: data.type,
+    },
+    geometry: {
+      type: "Point",
+      coordinates: [data.longitude, data.latitude],
+    },
+  };
+
+  const geojson = {
+    type: "FeatureCollection",
+    features: [],
+  };
+
+  geojson.features.push(feature);
+
   L.geojson(geojson).addTo(map);
 };
 
