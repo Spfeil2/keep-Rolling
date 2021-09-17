@@ -695,6 +695,7 @@ const changeHTML = (data) => {
   date = date.toLocaleDateString("de");
 
   console.log(data.image);
+  document.getElementById("obstruction-preview__image").src = data.image;
 
   document.getElementById(
     "clicked-marker__content-type-preview"
