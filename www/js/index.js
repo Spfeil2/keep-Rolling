@@ -274,11 +274,18 @@ form.onsubmit = async (e) => {
         data
       );
 
+      addNewFeature(data);
       closeDrawer();
     }
   } catch (error) {
     console.log(error);
   }
+};
+
+// add new feature to existing map
+const addNewFeature = (data) => {
+  const geojson = createGeoJSON(data);
+  L.geojson(geojson).addTo(map);
 };
 
 const invalidInputErrorHandling = () => {
@@ -678,7 +685,7 @@ const changeHTML = (data) => {
   console.log(data);
   let type;
   let isFixed;
-  let detailImage
+  let detailImage;
 
   if (data.type == "object") {
     type = "No informations";
@@ -696,14 +703,17 @@ const changeHTML = (data) => {
   date = date.toLocaleDateString("de");
 
   if (data.photo === undefined) {
-    detailImage = "https://www.koeln.de/files/koeln/locations/koelner-dom_hl_0514_565x270.jpg"
+    detailImage =
+      "https://www.koeln.de/files/koeln/locations/koelner-dom_hl_0514_565x270.jpg";
   } else {
-    detailImage = data.photo
+    detailImage = data.photo;
   }
 
   console.log(data.photo);
   console.log(detailImage);
-  document.getElementsByClassName("obstruction-preview__image").src = detailImage;
+  document.getElementsByClassName(
+    "obstruction-preview__image"
+  ).src = detailImage;
 
   document.getElementById(
     "clicked-marker__content-type-preview"
