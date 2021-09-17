@@ -8,6 +8,16 @@ let openObstructionPreviewContainerSwitch = false;
 let clickObstructionInformations;
 let featureLayer;
 
+// Wait for the deviceready event before using any of Cordova's device APIs.
+document.addEventListener("deviceready", onDeviceReady, false);
+
+function onDeviceReady() {
+  // Cordova is now initialized. Have fun!
+
+  console.log("Running cordova-" + cordova.platformId + "@" + cordova.version);
+  document.getElementById("deviceready").classList.add("ready");
+}
+
 // close clicked-marker-container
 document
   .getElementById("clicked-marker-container-close")
@@ -113,16 +123,6 @@ document.addEventListener("click", (e) => {
     pickLocationSwitch = true;
   }
 });
-
-/* // Wait for the deviceready event before using any of Cordova's device APIs.
-document.addEventListener("deviceready", onDeviceReady, false);
-
-function onDeviceReady() {
-  // Cordova is now initialized. Have fun!
-
-  console.log("Running cordova-" + cordova.platformId + "@" + cordova.version);
-  document.getElementById("deviceready").classList.add("ready");
-} */
 
 // stop showing welcome screen after 4 seconds
 setTimeout(() => {
@@ -763,17 +763,6 @@ const changeHTML = (data) => {
   document.getElementById("clicked-marker__content-reportedBy").innerHTML =
     data.name;
   document.getElementById("obstruction-status").innerHTML = isFixed;
-
-  behoben: null;
-  date: "2021-09-14T22:00:00.000Z";
-  description: "asasasdasasdasd";
-  id: 355;
-  latitude: 52.2921;
-  longitude: 8.09418;
-  mail: "dummy@gmail.com";
-  name: "dummy";
-  photo: null;
-  type: "object";
 };
 
 document.addEventListener("DOMContentLoaded", function (event) {
@@ -828,24 +817,19 @@ function createCustomIcons(feature, latlng) {
 
   switch (feature.properties["type"]) {
     case "parking":
-      newIcon.iconUrl =
-        "/www/img/red_marker.jpg";
+      newIcon.iconUrl = "/www/img/red_marker.jpg";
       return L.marker(latlng, { icon: new L.icon(newIcon) });
     case "damage":
-      newIcon.iconUrl =
-        "/www/img/violet_marker.jpg";
+      newIcon.iconUrl = "/www/img/violet_marker.jpg";
       return L.marker(latlng, { icon: new L.icon(newIcon) });
     case "vegetation":
-      newIcon.iconUrl =
-        "/www/img/green_marker.jpg";
+      newIcon.iconUrl = "/www/img/green_marker.jpg";
       return L.marker(latlng, { icon: new L.icon(newIcon) });
     case "object":
-      newIcon.iconUrl =
-        "/www/img/yellow_marker.jpg";
+      newIcon.iconUrl = "/www/img/yellow_marker.jpg";
       return L.marker(latlng, { icon: new L.icon(newIcon) });
     case "traffic_lights":
-      newIcon.iconUrl =
-        "/www/img/grey_marker.jpg";
+      newIcon.iconUrl = "/www/img/grey_marker.jpg";
       return L.marker(latlng, { icon: new L.icon(newIcon) });
   }
 }
