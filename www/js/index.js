@@ -272,7 +272,7 @@ form.onsubmit = async (e) => {
       invalidInputErrorHandling();
     } else {
       const postResponse = await axios.post(
-        "http://igf-srv-lehre.igf.uni-osnabrueck.de:41781/postObstruction",
+        "http://igf-srv-lehre.igf.uni-osnabrueck.de:41782/postObstruction",
         data
       );
 
@@ -573,7 +573,7 @@ const submitSearch = async (event) => {
     // valid query and no error message
     if (!emptyQuery && errorMessage === undefined) {
       const response = await axios.get(
-        "http://igf-srv-lehre.igf.uni-osnabrueck.de:41781/filterObstructions",
+        "http://igf-srv-lehre.igf.uni-osnabrueck.de:41782/filterObstructions",
         {
           params: {
             days,
@@ -715,7 +715,7 @@ document.getElementById("drawer__take-photo").addEventListener("click", () => {
 const makeGetRequest = async () => {
   try {
     const response = await axios.get(
-      "http://igf-srv-lehre.igf.uni-osnabrueck.de:41781/getAllObstructions"
+      "http://igf-srv-lehre.igf.uni-osnabrueck.de:41782/getAllObstructions"
     );
 
     return response.data.rows;
@@ -795,7 +795,7 @@ const clickOnFeature = async (e) => {
   try {
     // e.target.feature.properties.id
     const response = await axios.get(
-      `http://igf-srv-lehre.igf.uni-osnabrueck.de:41781/getObstructionById/${e.target.feature.properties.id}`
+      `http://igf-srv-lehre.igf.uni-osnabrueck.de:41782/getObstructionById/${e.target.feature.properties.id}`
     );
 
     clickObstructionInformations = response.data.rows[0];
@@ -955,7 +955,7 @@ const closeLegend = () => {
 };
 
 const deleteAllFeatures = async () => {
-  const res = await axios.delete("http://igf-srv-lehre.igf.uni-osnabrueck.de:41781/delete")
+  const res = await axios.delete("http://igf-srv-lehre.igf.uni-osnabrueck.de:41782/delete")
 
   console.log(res)
 }

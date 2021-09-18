@@ -657,14 +657,14 @@ body {
 .clicked-marker-container__image-container {
   width: 100%;
   height: 40%;
+
 }
 
 .clicked-marker-container__image {
-  object-fit: fill;
   width: 100%;
   height: 100%;
-  border-top-right-radius: 8px;
-  border-top-left-radius: 8px;
+
+  object-fit: cover;
 }
 
 .clicked-marker__content-container {
@@ -773,10 +773,6 @@ body {
 }
 
 .obstruction-preview__image {
-  border-top-left-radius: 18px;
-  border-bottom-left-radius: 18px;
-
-
   display: block;
   width: 100%;
   height: 100%;
