@@ -195,6 +195,7 @@ const map = L.map("map", {
 // onclick events
 map.on("click", (e) => {
   coordinates = e.latlng;
+  featureCoordinates = e.latlng
 });
 
 L.control.scale().addTo(map);
@@ -232,7 +233,7 @@ const openDeficiencyDrawer = () => {
     // add location of deficienty to drawer html
     document.getElementById(
       "drawer__coordinates"
-    ).innerHTML = `Your picked coordinates: ${coordinates}`;
+    ).innerHTML = `Your picked coordinates: ${featureCoordinates}`;
   }, 300);
 
   // show drawer
@@ -259,7 +260,7 @@ form.onsubmit = async (e) => {
     mail,
     description,
     date,
-    coordinates,
+    featureCoordinates,
     image,
   };
 
@@ -296,10 +297,10 @@ const addNewFeature = (data, id) => {
   console.log(id)
   //console.log(data.coordinates.lng)
   let sliceNumber = (num, len) => +String(num).slice(0, len);
-  const lat = sliceNumber(data.coordinates.lat, 7);
-  const lng = sliceNumber(data.coordinates.lng, 7);
+  const lat = sliceNumber(data.featureCoordinates.lat, 7);
+  const lng = sliceNumber(data.featureCoordinates.lng, 7);
 
-  console.log(data.coordinates.lng, data.coordinates.lat)
+  console.log(data.featureCoordinates.lng, data.featureCoordinates.lat)
 
   // lng = kurz
   // lat = lang
@@ -314,7 +315,7 @@ const addNewFeature = (data, id) => {
     },
     geometry: {
       type: "Point",
-      coordinates: [data.coordinates.lng, data.coordinates.lat]
+      coordinates: [data.featureCoordinates.lng, data.featureCoordinates.lat]
     },
   };
 
@@ -959,4 +960,4 @@ const deleteAllFeatures = async () => {
   console.log(res)
 }
 
-deleteAllFeatures()
+// deleteAllFeatures()
