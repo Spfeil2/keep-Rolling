@@ -4,6 +4,7 @@ let basemapSwitch = true;
 let legendSwitch = true;
 let pickLocationSwitch = true;
 let coordinates;
+let featureCoordinates;
 let openObstructionPreviewContainerSwitch = false;
 let clickObstructionInformations;
 let featureLayer;
@@ -261,7 +262,7 @@ form.onsubmit = async (e) => {
     coordinates,
     image,
   };
-  console.log(data);
+
   e.preventDefault();
 
   try {
@@ -273,11 +274,14 @@ form.onsubmit = async (e) => {
         "http://igf-srv-lehre.igf.uni-osnabrueck.de:41781/postObstruction",
         data
       );
-      console.log(postResponse)
-      //console.log(data.coordinates.lat)
 
-      getByLatLng(data);
-      addNewFeature(data);
+      console.log("postResponse: ", postResponse)
+
+      if (data.image === undefined) {
+        data.image = "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/832px-No-Image-Placeholder.svg.png"
+      } 
+
+      addNewFeature(data, postResponse.data.id);
       closeDrawer();
     }
   } catch (error) {
@@ -285,31 +289,23 @@ form.onsubmit = async (e) => {
   }
 };
 
-const getByLatLng = async (data) => {
-  //const {type, lat, lng} = data
-  console.log("Get fired")
-  try {
-    const lat = data.coordinates.lat;
-    const lng = data.coordinates.lng;
-    const getResponse = await axios.get(
-      "http://igf-srv-lehre.igf.uni-osnabrueck.de:41781/getObstructionByLatLong",
-      {
-        params: {
-          lat,
-          lng
-        },
-      }
-    );
-    console.log(getResponse)
-  } catch (error) {
-    console.log(error)
-  }
-}
- 
 
 // add new feature to existing map
-const addNewFeature = (data) => {
+const addNewFeature = (data, id) => {
+  console.log(data)
+  console.log(id)
   //console.log(data.coordinates.lng)
+  let sliceNumber = (num, len) => +String(num).slice(0, len);
+  const lat = sliceNumber(data.coordinates.lat, 7);
+  const lng = sliceNumber(data.coordinates.lng, 7);
+
+  console.log(data.coordinates.lng, data.coordinates.lat)
+
+  // lng = kurz
+  // lat = lang
+
+  console.log(typeof lat)
+
   const feature = {
     type: "Feature",
     properties: {
@@ -318,7 +314,7 @@ const addNewFeature = (data) => {
     },
     geometry: {
       type: "Point",
-      coordinates: [data.coordinates.lng, data.coordinates.lat],
+      coordinates: [data.coordinates.lng, data.coordinates.lat]
     },
   };
 
@@ -328,13 +324,10 @@ const addNewFeature = (data) => {
   };
 
   geojson.features.push(feature);
+
+  console.log(feature)
   
   featureLayer.addData(feature);
-
-  //const test = L.geoJSON(geojson, {
-    //pointToLayer: createCustomIcons,
-    //onEachFeature,
-  //}).addTo(map);
   };
 
 const invalidInputErrorHandling = () => {
@@ -751,15 +744,16 @@ const changeHTML = (data) => {
   let date = new Date(data.date);
   date = date.toLocaleDateString("de");
 
-  if (data.photo === undefined) {
+  if (data.photo === "undefined") {
     detailImage =
-      "https://www.koeln.de/files/koeln/locations/koelner-dom_hl_0514_565x270.jpg";
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/832px-No-Image-Placeholder.svg.png";
   } else {
     detailImage = data.photo;
   }
 
   console.log(data.photo);
   console.log(detailImage);
+
   document.getElementsByClassName(
     "obstruction-preview__image"
   ).src = detailImage;
@@ -958,3 +952,11 @@ const closeLegend = () => {
   // hide legend
   document.getElementById("legend-container").style.height = "0";
 };
+
+const deleteAllFeatures = async () => {
+  const res = await axios.delete("http://igf-srv-lehre.igf.uni-osnabrueck.de:41781/delete")
+
+  console.log(res)
+}
+
+deleteAllFeatures()
