@@ -48,8 +48,7 @@ app.post("/postObstruction", async (req, res) => {
 
     const sql_insert = `INSERT INTO meldungen (name, date, mail, description, type, latitude, longitude, photo) VALUES('${name}', '${date}', '${mail}', '${description}', '${type}', '${latitude}', '${longitude}', '${image}')`;
     const response = await client.query(sql_insert);
-    console.log(response);
-
+  
     res.status(200).send({ message: "Working" });
   } catch (e) {
     console.log(e);
@@ -59,7 +58,7 @@ app.post("/postObstruction", async (req, res) => {
 // get obstruction by id
 app.get("/getObstructionById/:id", async (req, res) => {
   const id = parseInt(req.params.id);
-  // console.log(id)
+ //console.log(id)
 
   try {
     const sql_result = await client.query(
@@ -72,6 +71,33 @@ app.get("/getObstructionById/:id", async (req, res) => {
     res.status(400).send(e);
   }
 });
+
+// slice without rounding
+const sliceDecimalNumber = (number) => {
+  let num = number.toString(); // convert number to string
+  num = num.slice(0, (num.indexOf("."))+5); // With 4 exposing the hundredths place
+  return Number(num); //If you need it back as a Number
+}
+
+// get Obstruction by latlng
+app.get("/getObstructionByLatLong", async (req, res) => {
+    const {lat,lng} = req.query;
+    const slicedLat = sliceDecimalNumber(lat);
+    const slicedLng = sliceDecimalNumber(lng);
+    console.log(req.query)
+    console.log(slicedLat, slicedLng);
+  try {
+    const sql_result = await client.query(
+      `SELECT * FROM meldungen WHERE latitude = ${slicedLat} AND longitude = ${slicedLng}`
+    );
+    console.log(sql_result.rows);
+    res.status(200).send(sql_result);
+  } catch (e) {
+    console.log(e);
+    res.status(400).send(e);
+  } 
+});
+
 
 // filter obstructions
 app.get("/filterObstructions", async (req, res) => {
@@ -172,10 +198,13 @@ app.get("/getAllObstructions", async (req, res) => {
     res.status(400).send({ results: e });
   }
 });
+
+
+
 /* 
 app.get('/filterType', async (req, res) => {
   try{
-      const sql_result = await client.query("SELECT * FROM meldungen WHERE type='vegetation'")
+      const sql_result = await client.query("SELECT *** FROM meldungen WHERE type='vegetation'")
       res.status(200).send({results:sql_result.rows})
   } catch (e) {
       console.log(e)

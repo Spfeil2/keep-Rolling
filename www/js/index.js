@@ -261,7 +261,7 @@ form.onsubmit = async (e) => {
     coordinates,
     image,
   };
-
+  console.log(data);
   e.preventDefault();
 
   try {
@@ -269,11 +269,14 @@ form.onsubmit = async (e) => {
     if (!name || !mail || !description) {
       invalidInputErrorHandling();
     } else {
-      const res = await axios.post(
+      const postResponse = await axios.post(
         "http://igf-srv-lehre.igf.uni-osnabrueck.de:41781/postObstruction",
         data
       );
+      console.log(postResponse)
+      //console.log(data.coordinates.lat)
 
+      getByLatLng(data);
       addNewFeature(data);
       closeDrawer();
     }
@@ -282,13 +285,35 @@ form.onsubmit = async (e) => {
   }
 };
 
+const getByLatLng = async (data) => {
+  //const {type, lat, lng} = data
+  console.log("Get fired")
+  try {
+    const lat = data.coordinates.lat;
+    const lng = data.coordinates.lng;
+    const getResponse = await axios.get(
+      "http://igf-srv-lehre.igf.uni-osnabrueck.de:41781/getObstructionByLatLong",
+      {
+        params: {
+          lat,
+          lng
+        },
+      }
+    );
+    console.log(getResponse)
+  } catch (error) {
+    console.log(error)
+  }
+}
+ 
+
 // add new feature to existing map
 const addNewFeature = (data) => {
-  console.log(data.coordinates.lng)
+  //console.log(data.coordinates.lng)
   const feature = {
     type: "Feature",
     properties: {
-      id: 10,
+      id,
       type: data.type,
     },
     geometry: {
