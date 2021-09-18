@@ -752,13 +752,13 @@ const changeHTML = (data) => {
     detailImage = data.photo;
   }
 
-  console.log(data.photo);
   console.log(detailImage);
 
-  document.getElementsByClassName(
+  document.getElementById(
     "obstruction-preview__image"
   ).src = detailImage;
 
+  document.getElementById("clicked-marker-container__image").src = detailImage
   document.getElementById(
     "clicked-marker__content-type-preview"
   ).innerHTML = type;
