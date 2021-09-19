@@ -1,5 +1,4 @@
-// event listener on document
-// bool for basemap control and pick-locationc
+// setup global variables
 let basemapSwitch = true;
 let legendSwitch = true;
 let pickLocationSwitch = true;
@@ -9,13 +8,16 @@ let openObstructionPreviewContainerSwitch = false;
 let clickObstructionInformations;
 let featureLayer;
 let image;
+let currentMode = "light";
+let selectedTypes = [];
+let isGeolocationActive = true;
+let markerSwitch = true;
 
-// Wait for the deviceready event before using any of Cordova's device APIs.
+// wait for the deviceready event before using any of cordova's device APIs.
 document.addEventListener("deviceready", onDeviceReady, false);
 
+// initialize cordova
 function onDeviceReady() {
-  // Cordova is now initialized. Have fun!
-
   console.log("Running cordova-" + cordova.platformId + "@" + cordova.version);
   document.getElementById("deviceready").classList.add("ready");
 }
@@ -38,16 +40,16 @@ document
       "none";
   });
 
-function hasParentWithMatchingSelector(target, selector) {
+// check if click target is not a child of obstruction-preview-container
+const hasParentWithMatchingSelector = (target, selector) => {
   return [...document.querySelectorAll(selector)].some(
     (el) => el !== target && el.contains(target)
   );
 }
 
+// detect click outside obstruction-preview-container to close ist
 document.addEventListener("click", (e) => {
   const container = document.getElementById("obstruction-preview-container");
-  // detect click outside basemap container to close it
-  // check if anything without the class name "basemap" got clicked
   const isChildElement = hasParentWithMatchingSelector(
     e.target,
     "#obstruction-preview-container"
@@ -75,10 +77,11 @@ document.addEventListener("click", (e) => {
   }
 });
 
+// detect click outside basemap container to close it
 document.addEventListener("click", (e) => {
   const container = document.getElementById("basemap-container");
-  // detect click outside basemap container to close it
-  // check if anything without the class name "basemap" got clicked
+
+  // check if anything without the class name "basemap" got clicked  
   if (
     !e.target.classList.contains("basemap") &&
     container.style.height === "160px" &&
@@ -99,9 +102,10 @@ document.addEventListener("click", (e) => {
   }
 });
 
+// detect click outside basemap container to close it
 document.addEventListener("click", (e) => {
   const container = document.getElementById("pick-location-container");
-  // detect click outside basemap container to close it
+  
   // check if anything without the class name "basemap" got clicked
   if (
     !e.target.classList.contains("pick-location") &&
@@ -131,82 +135,78 @@ setTimeout(() => {
   document.getElementById("welcome-screen").style.display = "none";
 }, 4000);
 
-// filter
+// show filter drawer
 const openFilter = () => {
-  // show filter content
+  // show filter content with delay
   setTimeout(() => {
     document.getElementById("filter__content").style.display = "block";
   }, 300);
-
-  // show filter
   document.getElementById("filter-container").style.width = "100%";
 };
 
-/* Set the width of the filter to 0 */
+// close filter drawer
 const closeFilter = () => {
   // hide filter content
   document.getElementById("filter__content").style.display = "none";
-
-  // hide filter
   document.getElementById("filter-container").style.width = "0";
 };
 
-/* Set the width of the drawer to 0 */
+// close drawer
 const closeDrawer = () => {
   // hide drawer content
   document.getElementById("drawer__content").style.display = "none";
-
-  // hide drawer
   document.getElementById("drawer-container").style.width = "0";
 };
 
-// setting
+// open settings drawer
 const openSettings = () => {
   // show settings content
   setTimeout(() => {
     document.getElementById("settings__content").style.display = "block";
   }, 300);
-
-  // show settings
   document.getElementById("settings-container").style.width = "100%";
 };
 
-/* Set the width of the settings to 0 */
+// close settings drawer
 const closeSettings = () => {
   // hide settings content
   document.getElementById("settings__content").style.display = "none";
-
-  // hide settings
   document.getElementById("settings-container").style.width = "0";
 };
 
-// map
+// default OpenStreetMap basemap
 let baseLayer = L.tileLayer("https://{s}.tile.osm.org/{z}/{x}/{y}.png", {
   attribution:
     '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors',
 });
 
+// initialize map object
 const map = L.map("map", {
   center: [52.283333, 8.05],
   zoom: 12,
   layers: [baseLayer],
 });
 
-// onclick events
+// extract coordinates on click
 map.on("click", (e) => {
+  // use lat long for user position
   coordinates = e.latlng;
+  // use lat long for the coordinates of the new obstruction
   featureCoordinates = e.latlng
 });
 
+// add scale to map
 L.control.scale().addTo(map);
 
-// zoom to current location on initial page load
+// zoom to current location via cordova geolocation API on initial page load
 const geolocate = () => {
   navigator.geolocation.getCurrentPosition(function (location) {
     const latlng = new L.LatLng(
       location.coords.latitude,
       location.coords.longitude
     );
+
+    // zoom current location
     map.flyTo(latlng);
   });
 };
@@ -218,16 +218,10 @@ const onLocationFound = (e) => {
   coordinates = e.latlng;
 };
 
-/*
-setInterval(() => {
-    console.log(coordinates)    
-}, 2000);
-*/
-
 map.on("locationfound", onLocationFound);
 
 const openDeficiencyDrawer = () => {
-  // show drawer content
+  // show drawer content with delay of 0,3 seconds
   setTimeout(() => {
     document.getElementById("drawer__content").style.display = "block";
     // add location of deficienty to drawer html
@@ -236,7 +230,7 @@ const openDeficiencyDrawer = () => {
     ).innerHTML = `Your picked coordinates: ${featureCoordinates}`;
   }, 300);
 
-  // show drawer
+  // show drawer container
   document.getElementById("drawer-container").style.width = "100%";
 };
 
@@ -247,11 +241,11 @@ form.onsubmit = async (e) => {
   const type = form.deficiency.value;
   const name = form.name.value;
   const mail = form.email.value;
-  //const image = form.image.value;
   const description = document.getElementsByClassName(
     "drawer__input--textarea"
   )[0].value;
 
+  // convert date object to string and slice to match used convention
   let date = new Date().toISOString().slice(0, 10);
 
   const data = {
@@ -266,22 +260,24 @@ form.onsubmit = async (e) => {
 
   e.preventDefault();
 
+
   try {
-    // invalid input
+    // validate user input
     if (!name || !mail || !description) {
       invalidInputErrorHandling();
     } else {
+      // if valid input post request
       const postResponse = await axios.post(
         "http://igf-srv-lehre.igf.uni-osnabrueck.de:41782/postObstruction",
         data
       );
 
-      console.log("postResponse: ", postResponse)
-
+      // use placeholder image if non provided
       if (data.image === undefined) {
         data.image = "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/832px-No-Image-Placeholder.svg.png"
       } 
 
+      // add new feature to map based on data object and returned id
       addNewFeature(data, postResponse.data.id);
       closeDrawer();
     }
@@ -295,17 +291,12 @@ form.onsubmit = async (e) => {
 const addNewFeature = (data, id) => {
   console.log(data)
   console.log(id)
-  //console.log(data.coordinates.lng)
+
+  // slice to match precision
   let sliceNumber = (num, len) => +String(num).slice(0, len);
   const lat = sliceNumber(data.featureCoordinates.lat, 7);
   const lng = sliceNumber(data.featureCoordinates.lng, 7);
 
-  console.log(data.featureCoordinates.lng, data.featureCoordinates.lat)
-
-  // lng = kurz
-  // lat = lang
-
-  console.log(typeof lat)
 
   const feature = {
     type: "Feature",
@@ -324,19 +315,19 @@ const addNewFeature = (data, id) => {
     features: [],
   };
 
+  // create new geojson based on feature
   geojson.features.push(feature);
-
-  console.log(feature)
   
   featureLayer.addData(feature);
   };
 
+// error handling for invalid input
 const invalidInputErrorHandling = () => {
   document.getElementById("drawer__error-message").style.display = "block";
   document.getElementById("drawer__error-message").innerHTML =
     "Invalid request. Please provide all the necessary informations.";
 
-  // check which input value is invalid -> change border to red
+  // check which input value is invalid and change border to red
   const nameInput = document.getElementsByClassName("drawer__input")[0];
   const emailInput = document.getElementsByClassName("drawer__input")[1];
   const descriptionInput = document.getElementsByClassName(
@@ -344,6 +335,7 @@ const invalidInputErrorHandling = () => {
   )[0];
 
   // check if empty string
+
   if (nameInput.value === "") {
     nameInput.style.border = "1px solid red";
   } else {
@@ -363,6 +355,7 @@ const invalidInputErrorHandling = () => {
   }
 };
 
+// initialize location control object
 const lc = L.control
   .locate({
     watch: true,
@@ -373,7 +366,7 @@ const lc = L.control
   })
   .addTo(map);
 
-// show marker and zoom to current location on load
+// show location and zoom to current location on load
 lc.start();
 
 // toggle basemap container
@@ -388,7 +381,7 @@ const toggleBasemaps = () => {
   }
 };
 
-// toggle basemap container
+// toggle pick location container
 const togglePickLocation = () => {
   const container = document.getElementById("pick-location-container");
 
@@ -429,6 +422,7 @@ const switchBasemap = (event) => {
     }
   );
 
+  // switch basemap and remove old layer
   if (element === "standard-map") {
     map.removeLayer(baseLayer);
     map.addLayer(osmDe);
@@ -444,8 +438,7 @@ const switchBasemap = (event) => {
   }
 };
 
-let currentMode = "light";
-// dark/light mode
+// switch style based on dark or light mode
 const switchMode = () => {
   let currentModeElement = document.getElementsByClassName(
     "settings__content-inner-title"
@@ -493,10 +486,10 @@ const switchMode = () => {
   currentMode === "light" ? (currentMode = "dark") : (currentMode = "light");
 };
 
-let selectedTypes = [];
+// submit filter obstruction
 const submitSearch = async (event) => {
   event.preventDefault();
-
+  // get input variables
   const days = event.target.days.value;
   let dateStart = event.target.start.value;
   let dateEnd = event.target.end.value;
@@ -509,6 +502,8 @@ const submitSearch = async (event) => {
     (dateStart !== "" && dateEnd === "");
   const noDays = days === "";
 
+  // input validation
+
   // invalid input: no options provided
   if (
     noDays &&
@@ -519,25 +514,12 @@ const submitSearch = async (event) => {
     errorMessage = "Invalid request. Please provide filter arguments.";
   }
 
-  /*
-   * handle days and time range
-   */
-
-  // Fall 1 (Tage ja, range nein nein)
-  if (!noDays && isDateEmpty) {
-    console.log(1);
-  }
-
-  // Fall 3
+  // check if days specified or time range
   if (!noDays && !isDateEmpty) {
     errorMessage = "Invalid request. Specify days OR select a time range.";
   }
 
-  // Fall a (nur type wird angegeben)
-  if (noDays && isDateEmpty && selectedTypes.length !== 0) {
-  }
-
-  // Fall b (tage nein, range ja nein || nein ja)
+  // check if days or one day is specified
   if (noDays && isOneDaySpecified) {
     errorMessage =
       "Invalid request. You likely forgot to specify the time range.";
@@ -548,18 +530,17 @@ const submitSearch = async (event) => {
     dateStart = new Date(dateStart);
   }
 
+  // check if end date is before start date
   if (dateEnd < dateStart) {
     errorMessage = "Invalid request. Start date must be before the end date.";
   }
 
-  /*
-   * check valid input
-   */
-
+  // check if query is empty
   if (days === "" && selectedTypes.length === 0 && isDateEmpty) {
     emptyQuery = true;
   }
 
+  // hide error message container if valid input vice versa
   if (errorMessage !== undefined) {
     document.getElementById("filter__content-error").style.display = "block";
     document.getElementById(
@@ -589,7 +570,7 @@ const submitSearch = async (event) => {
       // add features returning from query to geojson
       addFeatures(response.data.rows);
 
-      // wenn result ankommt, dann soll filter contaienr geschlossen werden, vorher dann spinner anzeigen
+      // close filter container after successfull response
       if (response) {
         closeFilter();
       }
@@ -603,38 +584,24 @@ const submitSearch = async (event) => {
 const filterTypes = (event) => {
   const e = event.target;
 
-  console.log(e.style.backgroundColor);
-  console.log(e);
-
-  if (currentMode === "dark") {
-    console.log(1);
-  } else {
-    console.log(2);
-  }
-
-  /*
   if (e.classList.value == "filter__options") {
-    if (e.style.backgroundColor === "rgb(255, 137, 6)") {
-      e.style.backgroundColor = "white";
-      e.style.boxShadow = "none";
-      e.style.border = "1px solid #dee0e4";
+    if (e.style.backgroundColor !== "rgb(255, 137, 6)") {
+      e.style.backgroundColor = "#ff8906"
 
-      // filter selectedTypes and delete item
+      // add type of clicked item to selectedTypes
+      selectedTypes.push(e.getAttribute("value"));
+    } else {
+      // filter selectedTypes and delete type of clicked item
       selectedTypes = selectedTypes.filter(
         (type) => type !== e.getAttribute("value")
       );
-    } else {
-      e.style.backgroundColor = "red";
-      e.style.boxShadow = "none";
-      e.style.border = "1px solid #dee0e4";
 
-      // add type to selectedTypes
-      selectedTypes.push(e.getAttribute("value"));
+      e.style.backgroundColor = "#faf6f6"
     }
   }
-  */
 };
 
+// disable fixed view on user location
 const stopGeolocation = () => {
   map.locate({
     watch: true,
@@ -646,25 +613,25 @@ const stopGeolocation = () => {
 };
 
 // toggle geolocation
-// follow is enabled per default
-let isGeolocationActive = true;
-
 const toggleGelocation = () => {
+  // change style of geolocation button and stop or start following
   if (isGeolocationActive) {
-    // change svg
+    // stop follow
+
     document.getElementById("gps-fixed").style.display = "none";
     document.getElementById("gps-not-fixed").style.display = "inline";
 
     stopGeolocation();
 
-    // stop following
     lc.stopFollowing();
     isGeolocationActive = false;
   } else {
-    // change svg
+    // start follow
+
     document.getElementById("gps-fixed").style.display = "inline";
     document.getElementById("gps-not-fixed").style.display = "none";
 
+    // enable fixed view on user location
     map.locate({
       watch: true,
       enableHighAccuracy: true,
@@ -681,7 +648,7 @@ const toggleGelocation = () => {
 // stop following on dragend
 map.on("dragend", function (e) {
   if (isGeolocationActive) {
-    // change svg
+
     document.getElementById("gps-fixed").style.display = "none";
     document.getElementById("gps-not-fixed").style.display = "inline";
 
@@ -692,7 +659,7 @@ map.on("dragend", function (e) {
   }
 });
 
-// take picture
+// take picture via cordova camera plugin
 document.getElementById("drawer__take-photo").addEventListener("click", () => {
   navigator.camera.getPicture(onSuccess, onFail, {
     quality: 25,
@@ -702,16 +669,23 @@ document.getElementById("drawer__take-photo").addEventListener("click", () => {
   function onSuccess(imageData) {
     const img = "data:image/jpeg;base64," + imageData;
 
+    // give user feedback after successfully capturing a photo
+    document.getElementById("drawer__foto-success-message").innerHTML = "Successfully captured a photo."
+    document.getElementById("drawer__take-photo").style.backgroundColor = "#60bf08"
+    document.getElementById("drawer__take-photo").style.border = "2px solid #ff8e3c"
+
     // overwrite global image variable for submit
     image = img;
   }
 
   function onFail(message) {
-    alert("Failed because: " + message);
+    // give user feedback after capturing a photo failed
+    document.getElementById("drawer__foto-success-message").innerHTML = "Photo capture failed. Please try again."
+    document.getElementById("drawer__take-photo").style.border = "2px solid red"
   }
 });
 
-// get all locations
+// get all obstructions
 const makeGetRequest = async () => {
   try {
     const response = await axios.get(
@@ -719,22 +693,15 @@ const makeGetRequest = async () => {
     );
 
     return response.data.rows;
-  } catch (e) {
-    console.error(e);
+  } catch (error) {
+    console.error(error);
   }
 };
 
+// change html for detailed preview
 const changeHTML = (data) => {
-  console.log(data);
-  let type;
   let isFixed;
   let detailImage;
-
-  if (data.type == "object") {
-    type = "No informations";
-  } else {
-    type = data.type;
-  }
 
   if (data.behoben === null) {
     isFixed = "Not fixed";
@@ -742,17 +709,20 @@ const changeHTML = (data) => {
     isFixed = "Fixed";
   }
 
+  // create date object
   let date = new Date(data.date);
+  // change date to local timezone
   date = date.toLocaleDateString("de");
 
+  // if no picture provided use placeholder photo
   if (data.photo === "undefined") {
     detailImage =
       "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/832px-No-Image-Placeholder.svg.png";
+    document.getElementById("obstruction-preview__image").style.transform = "rotate(0deg)"
   } else {
     detailImage = data.photo;
+    document.getElementById("obstruction-preview__image").style.transform = "rotate(270deg)"
   }
-
-  console.log(detailImage);
 
   document.getElementById(
     "obstruction-preview__image"
@@ -761,8 +731,8 @@ const changeHTML = (data) => {
   document.getElementById("clicked-marker-container__image").src = detailImage
   document.getElementById(
     "clicked-marker__content-type-preview"
-  ).innerHTML = type;
-  document.getElementById("clicked-marker__content-type").innerHTML = type;
+  ).innerHTML = data.type;;
+  document.getElementById("clicked-marker__content-type").innerHTML = data.type;;
   document.getElementById("obstruction-preview__date").innerHTML = date;
   document.getElementsByClassName(
     "obstruction-showmore__date"
@@ -774,26 +744,25 @@ const changeHTML = (data) => {
   document.getElementById("obstruction-status").innerHTML = isFixed;
 };
 
+// fetch marker after dom content loaded
 document.addEventListener("DOMContentLoaded", function (event) {
   fetchMarker();
 });
 
 // toggle obstruction preview container
 const toggleObstructionPreview = (featureData) => {
+  const container = document.getElementById("obstruction-preview-container");
+  
   // add informations to hmtl
   changeHTML(featureData);
-
-  const container = document.getElementById("obstruction-preview-container");
-
   container.style.display = "grid";
-
   container.style.height = "161px";
   openObstructionPreviewContainerSwitch = true;
 };
 
+// get obstruction details by id and use informations for preview container
 const clickOnFeature = async (e) => {
   try {
-    // e.target.feature.properties.id
     const response = await axios.get(
       `http://igf-srv-lehre.igf.uni-osnabrueck.de:41782/getObstructionById/${e.target.feature.properties.id}`
     );
@@ -806,7 +775,7 @@ const clickOnFeature = async (e) => {
 };
 
 function onEachFeature(feature, layer) {
-  //bind click
+  // bind click
   layer.on({
     click: clickOnFeature,
   });
@@ -833,6 +802,7 @@ function createCustomIcons(feature, latlng) {
     pathBeginning = "/android_asset/www/img";
   }
 
+  // change marker icon based on type
   switch (feature.properties["type"]) {
     case "parking":
       newIcon.iconUrl = `${pathBeginning}/red_marker.jpg`;
@@ -852,6 +822,7 @@ function createCustomIcons(feature, latlng) {
   }
 }
 
+// fetch marker and add to map as geoJSON with type specific items
 const fetchMarker = async () => {
   const data = await makeGetRequest();
   const geojson = createGeoJSON(data);
@@ -868,7 +839,7 @@ const createGeoJSON = (features) => {
     features: [],
   };
 
-  //Loop through the markers array
+  // loop through the markers array
   features.map((marker) => {
     // create feature
     const feature = {
@@ -890,15 +861,17 @@ const createGeoJSON = (features) => {
   return geojson;
 };
 
+// remove existing features from featureLayer
 const removeFeatures = () => {
   featureLayer.clearLayers();
 };
 
+// add multiple features to map
+// this function will be called on initial page load (after dom content loaded)
 const addFeatures = (features) => {
   removeFeatures();
 
   const geojson = createGeoJSON(features);
-  console.log(features);
 
   featureLayer = L.geoJSON(geojson, {
     pointToLayer: createCustomIcons,
@@ -906,11 +879,10 @@ const addFeatures = (features) => {
   }).addTo(map);
 };
 
-let markerSwitch = true;
-
+// detect click outside marker container to close it
 document.addEventListener("click", (e) => {
   const container = document.getElementById("marker-container");
-  // detect click outside basemap container to close it
+
   // check if anything without the class name "marker" got clicked
   if (
     !e.target.classList.contains("marker") &&
@@ -932,6 +904,7 @@ document.addEventListener("click", (e) => {
   }
 });
 
+// toggle legend
 const toggleLegend = () => {
   closeSettings();
   const container = document.getElementById("legend-container");
@@ -940,24 +913,11 @@ const toggleLegend = () => {
     container.style.height = "0px";
     legendSwitch = true;
   } else {
-    /* setTimeout(() => {
-      document.getElementById("legend-container").style.display = "none";
-     }, 2000); */
-
     container.style.height = "300px";
   }
 };
 
-/* Set the width of the settings to 0 */
+// close legend
 const closeLegend = () => {
-  // hide legend
   document.getElementById("legend-container").style.height = "0";
 };
-
-const deleteAllFeatures = async () => {
-  const res = await axios.delete("http://igf-srv-lehre.igf.uni-osnabrueck.de:41782/delete")
-
-  console.log(res)
-}
-
-// deleteAllFeatures()

@@ -1,17 +1,14 @@
 {
-  "name": "io.cordova.hellocordova",
-  "displayName": "HelloCordova",
+  "name": "keep-rolling",
+  "displayName": "keep rolling",
   "version": "1.0.0",
-  "description": "A sample Apache Cordova application that responds to the deviceready event.",
+  "description": "keep rolling is a location based service and reporting system for tracking bicycle obstructions in urban areas",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "keywords": [
-    "ecosystem:cordova"
+    "location based service",
+    "lbs",
+    "cordova"    
   ],
-  "author": "Apache Cordova Team",
-  "license": "Apache-2.0",
   "devDependencies": {
     "cordova-android": "^9.1.0",
     "cordova-browser": "^6.0.0",

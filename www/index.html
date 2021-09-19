@@ -341,6 +341,9 @@
               <h1 id="drawer__foto-text">click here to take a picture</h1>
             </div>
 
+            <h3 id="drawer__foto-success-message"></h3>
+
+
             <label class="drawer__label">*Please provide a description</label>
             <textarea
               id="text"
@@ -593,7 +596,7 @@
             class="clicked-marker-container__image"
             id="clicked-marker-container__image"
           />
-        </div>
+
         <svg
           id="clicked-marker-container-close"
           xmlns="http://www.w3.org/2000/svg"
@@ -607,6 +610,7 @@
             d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
           />
         </svg>
+      </div>
         <div class="clicked-marker__content-container">
           <h1 class="clicked-marker__content-h1">Obstruction</h1>
           <p class="clicked-marker__content-type">
@@ -651,10 +655,11 @@
       id="obstruction-preview-container"
       class="obstruction-preview-container"
     >
-
+      <div id="obstruction-preview-image-container">        
         <img
           class="obstruction-preview__image" id = "obstruction-preview__image"
         />
+      </div>
 
       <div class="obstruction-preview__text-container">
         <h1>Obstruction</h1>
