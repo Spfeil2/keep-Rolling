@@ -200,7 +200,7 @@ L.control.scale().addTo(map);
 
 // zoom to current location via cordova geolocation API on initial page load
 const geolocate = () => {
-  navigator.geolocation.getCurrentPosition(function (location) {
+  navigator.geolocation.getCurrentPosition((location) => {
     const latlng = new L.LatLng(
       location.coords.latitude,
       location.coords.longitude
@@ -646,7 +646,7 @@ const toggleGelocation = () => {
 };
 
 // stop following on dragend
-map.on("dragend", function (e) {
+map.on("dragend", (e) => {
   if (isGeolocationActive) {
 
     document.getElementById("gps-fixed").style.display = "none";
@@ -678,7 +678,7 @@ document.getElementById("drawer__take-photo").addEventListener("click", () => {
     image = img;
   }
 
-  function onFail(message) {
+  function onFail (message) {
     // give user feedback after capturing a photo failed
     document.getElementById("drawer__foto-success-message").innerHTML = "Photo capture failed. Please try again."
     document.getElementById("drawer__take-photo").style.border = "2px solid red"
@@ -718,20 +718,14 @@ const changeHTML = (data) => {
   if (data.photo === "undefined") {
     detailImage =
       "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/832px-No-Image-Placeholder.svg.png";
-    document.getElementById("obstruction-preview__image").style.transform = "rotate(0deg)"
   } else {
     detailImage = data.photo;
-    document.getElementById("obstruction-preview__image").style.transform = "rotate(270deg)"
   }
-
-  document.getElementById(
-    "obstruction-preview__image"
-  ).src = detailImage;
 
   document.getElementById("clicked-marker-container__image").src = detailImage
   document.getElementById(
     "clicked-marker__content-type-preview"
-  ).innerHTML = data.type;;
+  ).innerHTML = data.type;
   document.getElementById("clicked-marker__content-type").innerHTML = data.type;;
   document.getElementById("obstruction-preview__date").innerHTML = date;
   document.getElementsByClassName(
@@ -745,7 +739,7 @@ const changeHTML = (data) => {
 };
 
 // fetch marker after dom content loaded
-document.addEventListener("DOMContentLoaded", function (event) {
+document.addEventListener("DOMContentLoaded", (event) => {
   fetchMarker();
 });
 
@@ -774,7 +768,7 @@ const clickOnFeature = async (e) => {
   }
 };
 
-function onEachFeature(feature, layer) {
+const onEachFeature = (feature, layer) => {
   // bind click
   layer.on({
     click: clickOnFeature,
@@ -782,7 +776,7 @@ function onEachFeature(feature, layer) {
 }
 
 // add custom icon depending on property type
-function createCustomIcons(feature, latlng) {
+const createCustomIcons = (feature, latlng) => {
   const newIcon = {
     iconUrl: "",
     shadowUrl:
