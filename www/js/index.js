@@ -260,7 +260,6 @@ form.onsubmit = async (e) => {
 
   e.preventDefault();
 
-
   try {
     // validate user input
     if (!name || !mail || !description) {
@@ -280,11 +279,35 @@ form.onsubmit = async (e) => {
       // add new feature to map based on data object and returned id
       addNewFeature(data, postResponse.data.id);
       closeDrawer();
+      resetImageFeedback()
+      resetInputValues()
     }
   } catch (error) {
     console.log(error);
   }
 };
+
+const resetImageFeedback = () => {
+  document.getElementById("drawer__foto-success-message").innerHTML = ""
+  document.getElementById("drawer__take-photo").style.backgroundColor = "rgb(240, 240, 240)"
+  document.getElementById("drawer__take-photo").style.border = "2px dashed #ff8e3c"
+
+  // reset image data
+  image = undefined;
+}
+
+const resetInputValues = () => {
+  const inputs = document.getElementsByClassName("drawer__input")
+  const textarea = document.getElementsByClassName("drawer__input--textarea")
+
+  for (let input of inputs) {
+    input.value = ""
+  }
+
+  for (let input of textarea) {
+    input.value = ""
+  }
+}
 
 
 // add new feature to existing map
@@ -667,15 +690,12 @@ document.getElementById("drawer__take-photo").addEventListener("click", () => {
   });
 
   function onSuccess(imageData) {
-    const img = "data:image/jpeg;base64," + imageData;
+    image = "data:image/jpeg;base64," + imageData;
 
     // give user feedback after successfully capturing a photo
     document.getElementById("drawer__foto-success-message").innerHTML = "Successfully captured a photo."
     document.getElementById("drawer__take-photo").style.backgroundColor = "#60bf08"
     document.getElementById("drawer__take-photo").style.border = "2px solid #ff8e3c"
-
-    // overwrite global image variable for submit
-    image = img;
   }
 
   function onFail (message) {
